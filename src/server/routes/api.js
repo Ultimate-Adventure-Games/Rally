@@ -1,5 +1,9 @@
 const express = require("express");
 const usersController = require("../controller/usersController.js");
+const eventsController = require("../controller/eventsController.js");
+const huntsController = require("../controller/huntsController.js");
+const userHuntsController = require("../controller/userHuntsController.js");
+const photosController = require("../controller/photosController.js");
 const router = express.Router();
 
 //-----------------------------------USERS-------------------------------
