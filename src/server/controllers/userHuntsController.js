@@ -4,10 +4,11 @@ const db = require("../models/model.js");
 const userHuntsController = {};
 
 //create
-usersController.createUser = (req, res, next) => {
-  const params = [req.body.first_name, req.body.last_name, req.body.user_name, req.body.user_password, req.body.user_email, req.body.user_location];
+// signUpForHunt(user_id, hunt_id)
+userHuntsController.signUpForHunt = (req, res, next) => {
+  const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
-    "INSERT INTO public.users (first_name, last_name, user_name, user_password, user_email, user_location) VALUES ($1, $2, $3, $4, $5, $6);";
+    "INSERT INTO public.userhunts (user_id, hunt_id) VALUES ($1, $2);";
 
   db.query(queryText, params)
     .then((res) => next())
@@ -15,9 +16,10 @@ usersController.createUser = (req, res, next) => {
 };
 
 //read
-usersController.getUser = (req, res, next) => {
-  const params = [req.params.user_id];
-  const queryText = "SELECT * FROM public.users WHERE user_id = $1;";
+// getAllUsersSignedUpForHunt(hunt_id)
+userHuntsController.getAllUsersSignedUpForHunt = (req, res, next) => {
+  const params = [req.params.hunt_id];
+  const queryText = "SELECT * FROM public.userhunts WHERE hunt_id = $1;";
 
   db.query(queryText, params)
     .then((result) => {
@@ -27,36 +29,40 @@ usersController.getUser = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-usersController.getAllUsers = (req, res, next) => {
-  const queryText = "SELECT * FROM public.users LIMIT 100;";
+// getAllUsersDoingHunt(hunt_id)
+userHuntsController.getAllUsersDoingHunt = (req, res, next) => {
+  const params = [req.params.hunt_id];
+  const queryText = "SELECT * FROM public.userhunts WHERE hunt_id = $1 AND progress = 'started';";
 
-  //promise based syntax
-  db.query(queryText)
+  db.query(queryText, params)
     .then((result) => {
-      res.locals.users = result.rows;
+      res.locals.user = result.rows;
       return next();
     })
     .catch((err) => next(err));
 };
 
-//authenticate name/password combo
-usersController.userAuth = (req, res, next) => {
-  const params = [req.params.user_name, req.params.user_password]
-  const queryText = "SELECT * FROM public.users WHERE user_name = $1 AND user_password = $2;";
-  db.query(queryText, params)
-  .then(result => {
-    res.locals.user = result.rows
-    return next();
-  })
-  .catch((err) => next(err));
+// getAllUsersCompletedHunt(hunt_id)
+userHuntsController.getAllUsersCompletedHunt = (req, res, next) => {
+  const params = [req.params.hunt_id];
+  const queryText = "SELECT * FROM public.userhunts WHERE hunt_id = $1 AND progress = 'completed';";
 
-}
+  db.query(queryText, params)
+    .then((result) => {
+      res.locals.user = result.rows;
+      return next();
+    })
+    .catch((err) => next(err));
+};
+
 
 //update
-usersController.updateUserName = (req, res, next) => {
-  const params = [req.body.user_name, req.params.user_id];
+// startHunt(user_id, hunt_id)
+userHuntsController.startHunt = (req, res, next) => {
+  const params = [req.body.user_id, req.params.hunt_id];
   const queryText =
-    "UPDATE public.users SET user_name = $1 WHERE  user_id = $2;";
+    "UPDATE public.userhunts SET progress = 'started' WHERE user_id = $1 AND  hunt_id = $2;";
+
   db.query(queryText, params)
     .then((result) => {
       res.locals.users = result.rows;
@@ -65,12 +71,15 @@ usersController.updateUserName = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-//delete
-usersController.deleteUser = async (req, res, next) => {
-  const params = [req.params.user_id];
-  const queryText = "DELETE FROM public.users WHERE user_id = $1;";
+// completeHunt(user_id, hunt_id)
+userHuntsController.completeHunt = (req, res, next) => {
+  const params = [req.body.user_id, req.params.hunt_id];
+  const queryText =
+    "UPDATE public.userhunts SET progress = 'completed' WHERE user_id = $1 AND  hunt_id = $2;";
+
   db.query(queryText, params)
     .then((result) => {
+      res.locals.users = result.rows;
       return next();
     })
     .catch((err) => next(err));

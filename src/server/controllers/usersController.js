@@ -4,10 +4,11 @@ const db = require("../models/model.js");
 const usersController = {};
 
 //create
+// createUser(username, password)
 usersController.createUser = (req, res, next) => {
-  const params = [req.body.first_name, req.body.last_name, req.body.user_name, req.body.user_password, req.body.user_email, req.body.user_location];
+  const params = [req.body.user_name, req.body.user_password];
   const queryText =
-    "INSERT INTO public.users (first_name, last_name, user_name, user_password, user_email, user_location) VALUES ($1, $2, $3, $4, $5, $6);";
+    "INSERT INTO public.users (user_name, user_password) VALUES ($1, $2);";
 
   db.query(queryText, params)
     .then((res) => next())
@@ -40,6 +41,7 @@ usersController.getAllUsers = (req, res, next) => {
 };
 
 //authenticate name/password combo
+// authUser(username, password)
 usersController.userAuth = (req, res, next) => {
   const params = [req.params.user_name, req.params.user_password]
   const queryText = "SELECT * FROM public.users WHERE user_name = $1 AND user_password = $2;";

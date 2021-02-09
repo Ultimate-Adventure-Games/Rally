@@ -4,10 +4,11 @@ const db = require("../models/model.js");
 const eventsController = {};
 
 //create
-usersController.createUser = (req, res, next) => {
-  const params = [req.body.first_name, req.body.last_name, req.body.user_name, req.body.user_password, req.body.user_email, req.body.user_location];
+// createEvent(user_id, hunt_id)
+eventsController.createEvent = (req, res, next) => {
+  const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
-    "INSERT INTO public.users (first_name, last_name, user_name, user_password, user_email, user_location) VALUES ($1, $2, $3, $4, $5, $6);";
+    "INSERT INTO public.events (user_id, hunt_id) VALUES ($1, $2);";
 
   db.query(queryText, params)
     .then((res) => next())
@@ -15,9 +16,10 @@ usersController.createUser = (req, res, next) => {
 };
 
 //read
-usersController.getUser = (req, res, next) => {
-  const params = [req.params.user_id];
-  const queryText = "SELECT * FROM public.users WHERE user_id = $1;";
+// getEvent(event_id)
+eventsController.getEventByEventId = (req, res, next) => {
+  const params = [req.params.event_id];
+  const queryText = "SELECT * FROM public.events WHERE event_id = $1;";
 
   db.query(queryText, params)
     .then((result) => {
@@ -27,50 +29,14 @@ usersController.getUser = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-usersController.getAllUsers = (req, res, next) => {
-  const queryText = "SELECT * FROM public.users LIMIT 100;";
+// getEvents(hunt_id)
+eventsController.getEventByHuntId = (req, res, next) => {
+  const params = [req.params.event_id];
+  const queryText = "SELECT * FROM public.events WHERE hunt_id = $1;";
 
-  //promise based syntax
-  db.query(queryText)
-    .then((result) => {
-      res.locals.users = result.rows;
-      return next();
-    })
-    .catch((err) => next(err));
-};
-
-//authenticate name/password combo
-usersController.userAuth = (req, res, next) => {
-  const params = [req.params.user_name, req.params.user_password]
-  const queryText = "SELECT * FROM public.users WHERE user_name = $1 AND user_password = $2;";
-  db.query(queryText, params)
-  .then(result => {
-    res.locals.user = result.rows
-    return next();
-  })
-  .catch((err) => next(err));
-
-}
-
-//update
-usersController.updateUserName = (req, res, next) => {
-  const params = [req.body.user_name, req.params.user_id];
-  const queryText =
-    "UPDATE public.users SET user_name = $1 WHERE  user_id = $2;";
   db.query(queryText, params)
     .then((result) => {
-      res.locals.users = result.rows;
-      return next();
-    })
-    .catch((err) => next(err));
-};
-
-//delete
-usersController.deleteUser = async (req, res, next) => {
-  const params = [req.params.user_id];
-  const queryText = "DELETE FROM public.users WHERE user_id = $1;";
-  db.query(queryText, params)
-    .then((result) => {
+      res.locals.user = result.rows;
       return next();
     })
     .catch((err) => next(err));
