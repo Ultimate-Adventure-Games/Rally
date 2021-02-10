@@ -1,9 +1,9 @@
 const express = require("express");
-const usersController = require("../controller/usersController.js");
-const eventsController = require("../controller/eventsController.js");
-const huntsController = require("../controller/huntsController.js");
-const userHuntsController = require("../controller/userHuntsController.js");
-const photosController = require("../controller/photosController.js");
+const usersController = require("../controllers/usersController.js");
+const eventsController = require("../controllers/eventsController.js");
+const huntsController = require("../controllers/huntsController.js");
+const userHuntsController = require("../controllers/userHuntsController.js");
+const photosController = require("../controllers/photosController.js");
 const router = express.Router();
 
 //-----------------------------------USERS-------------------------------
@@ -72,7 +72,7 @@ router.get("/hunts/:hunt_id", huntsController.getHunt, (req, res) => {
 })
 
 //get all hunts
-router.get("/hunts", huntsController.getHunts, (req, res) => {
+router.get("/hunts", huntsController.getAllHunts, (req, res) => {
   return res.status(200).json(res.locals.hunts);
 });
 
@@ -80,7 +80,7 @@ router.get("/hunts", huntsController.getHunts, (req, res) => {
 //-----------------------------------EVENTS-------------------------------
 //-------GET-----
 //get specific event, set event_id
-router.get("/events/:event_id", eventsController.getEvent, (req, res) => {
+router.get("/events/:event_id", eventsController.getEventByEventId, (req, res) => {
   return res.status(200).json(res.locals.event)
 })
 
@@ -100,7 +100,7 @@ router.post("/events", eventsController.createEvent, (req, res) => {
 //-----------------------------------PHOTOS-------------------------------
 //-------GET-----
 //get photos by event, set event_id
-router.get("/photos/:event_id", photosController.getPhotos, (req, res) => {
+router.get("/photos/:event_id", photosController.getPhotosByEvent, (req, res) => {
     return res.status(200).json(res.locals.photos)
 })
 
@@ -112,7 +112,7 @@ router.post("/photos/getPhotoByUserAndEvent", photosController.getPhotoByUserAnd
 });
 
 //create photo, set user_id event_id photo_src
-router.post("/photos/addPhoto", photosController.addPhoto, (req, res) => {
+router.post("/photos/addPhoto", photosController.createPhoto, (req, res) => {
   return res.status(200).send("successfully created photo");
 });
 

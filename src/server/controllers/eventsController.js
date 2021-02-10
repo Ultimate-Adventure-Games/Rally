@@ -23,7 +23,7 @@ eventsController.getEventByEventId = (req, res, next) => {
 
   db.query(queryText, params)
     .then((result) => {
-      res.locals.user = result.rows;
+      res.locals.event = result.rows;
       return next();
     })
     .catch((err) => next(err));
@@ -36,7 +36,19 @@ eventsController.getEventByHuntId = (req, res, next) => {
 
   db.query(queryText, params)
     .then((result) => {
-      res.locals.user = result.rows;
+      res.locals.event = result.rows;
+      return next();
+    })
+    .catch((err) => next(err));
+};
+
+eventsController.getEvents = (req, res, next) => {
+ 
+  const queryText = "SELECT * FROM public.events";
+
+  db.query(queryText, params)
+    .then((result) => {
+      res.locals.events = result.rows;
       return next();
     })
     .catch((err) => next(err));
