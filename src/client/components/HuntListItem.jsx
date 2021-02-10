@@ -70,30 +70,29 @@ const HuntListItem = ({ huntName, voteCount, linkTo }) => {
     // TODO include number of people signed up for hunt 
     return (
         <>
+          <div className="list-item-container">
             <div className="listItem">
-                <div className="voting-buttons-container">
-                    <button onClick={upvoteHandler}>&#8593;</button>
-                    <div className="voteCount">{voteCount}</div>
-                    <button onClick={downvoteHandler}>&#8595;</button>
-                </div>
                 <div className="text-container">
                     <div className="title">
                         {huntName}
                     </div>
-                    <div className="description">
-                        {/* TODO {description} */}
-                        Good times fam! 
+                    <div className="voting-buttons-container">
+                      <button className="upvote-button" onClick={upvoteHandler}>&#8593;</button>
+                      <div className={votes > 0 ? "voteCountGreen" : "voteCountRed"}>{voteCount}</div>
+                      <button className="downvote-button" onClick={downvoteHandler}>&#8595;</button>
                     </div>
                     <div>
                       {signupButton}
                     </div>
                 </div>
+                
                 <div className="navigate-container">
                     <div className="navigate">
                         <Link to={linkTo}>select</Link>
                     </div>
                 </div>
             </div>
+          </div>
         </>
     );
 }
