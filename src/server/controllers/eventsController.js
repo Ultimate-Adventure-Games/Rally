@@ -1,10 +1,7 @@
-const { Pool } = require("pg");
 const db = require("../models/model.js");
 
 const eventsController = {};
 
-//create
-// createEvent(user_id, hunt_id)
 eventsController.createEvent = (req, res, next) => {
   const params = [req.body.event_name, req.body.event_index, req.body.event_lat, req.body.event_long, req.body.event_riddle, req.body.hunt_id];
   const queryText =
@@ -15,8 +12,6 @@ eventsController.createEvent = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-//read
-// getEvent(event_id)
 eventsController.getEventByEventId = (req, res, next) => {
   const params = [req.params.event_id];
   const queryText = "SELECT * FROM public.events WHERE event_id = $1;";
@@ -29,7 +24,6 @@ eventsController.getEventByEventId = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-// getEvents(hunt_id)
 eventsController.getEventByHuntId = (req, res, next) => {
   const params = [req.params.event_id];
   const queryText = "SELECT * FROM public.events WHERE hunt_id = $1;";

@@ -1,10 +1,7 @@
-const { Pool } = require("pg");
 const db = require("../models/model.js");
 
 const userHuntsController = {};
 
-//create
-// signUpForHunt(user_id, hunt_id)
 userHuntsController.signUpForHunt = (req, res, next) => {
   const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
@@ -15,8 +12,6 @@ userHuntsController.signUpForHunt = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-//read
-// getAllUsersSignedUpForHunt(hunt_id)
 userHuntsController.getAllUsersSignedUpForHunt = (req, res, next) => {
   const params = [req.params.hunt_id];
   const queryText = "SELECT * FROM public.subs WHERE hunt_id = $1;";
@@ -55,8 +50,6 @@ userHuntsController.getAllUsersCompletedHunt = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-
-//update
 // startHunt(user_id, hunt_id)
 userHuntsController.startHunt = (req, res, next) => {
   const params = [req.body.user_id, req.body.hunt_id];
@@ -71,7 +64,6 @@ userHuntsController.startHunt = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-// completeHunt(user_id, hunt_id)
 userHuntsController.completeHunt = (req, res, next) => {
   const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
