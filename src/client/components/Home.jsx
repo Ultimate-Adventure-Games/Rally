@@ -5,10 +5,16 @@ const Home = (props) => {
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: ''
+        // TODO replace API key with environment variable
+        googleMapsApiKey: 'AIzaSyCmu-FkYYE9ggu-4iiJe2PfLvi-86lsx7Y'
     })
 
     const [map, setMap] = useState(null);
+    
+    const center = {
+      lat: 37.8270, 
+      lng: -122.4230
+    };
 
     const onLoad = useCallback(map => {
         const bounds = new window.google.maps.LatLngBounds();
@@ -20,12 +26,14 @@ const Home = (props) => {
         setMap(null);
     }, []);
 
+    
+
     return (
         <>
             <h1>Home</h1>
             {
                 isLoaded ?
-                    <GoogleMap onLoad={onLoad} onUnmount={onUnmount} zoom={10} center={{ lat: -3.745, lng: -38.523 }} mapContainerStyle={{ width: 400, height: 400 }} /> :
+                    <GoogleMap onUnmount={onUnmount} zoom={12} center={center} mapContainerStyle={{ width: 400, height: 400 }} /> :
                     <p>Loading map...</p>
 
             }

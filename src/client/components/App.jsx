@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
-import './styles/styles.css'
+// import './styles/styles.css'
 
 class App extends Component {
   constructor(props) {
