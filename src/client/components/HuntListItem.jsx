@@ -5,7 +5,7 @@ import { AppContext } from './ContextProvider';
 
 
 // TODO could linkTo just be based on key (aka hunt_id)
-const HuntListItem = ({ huntName, voteCount, linkTo }) => {
+const HuntListItem = ({ huntId, huntName, voteCount, linkTo, huntItemClickHandler, pos }) => {
 
   // deconstruct completedHunts, runningHunts, potentialHunts
   const {
@@ -34,16 +34,29 @@ const HuntListItem = ({ huntName, voteCount, linkTo }) => {
       // else if (potentialHunts.includes(linkTo)) setUserHuntStatus(1)
       // else setUserHuntStatus(0)
       setUserHuntStatus(0)
-    })
+    }, userHuntStatus)
       
     const [votes, setVotes] = useState(voteCount)
+    
+    
+    // TODO best way to figure out if user already voted? 
+    const [userVoted, setUserVoted] = useState(false);
+
 
     const upvoteHandler = () => {
-      setVotes(votes + 1)
+      if (!userVoted) {
+        setVotes(votes + 1);
+        setUserVoted(true);
+        // TODO update votes and boolean in global context
+      }
     }
     
     const downvoteHandler = () => {
-      setVotes(votes - 1)
+      if (!userVoted) {
+        setVotes(votes - 1);
+        setUserVoted(true);
+        // TODO update votes and boolean in global context
+      }
     }
 
     useEffect(() => {
@@ -51,26 +64,24 @@ const HuntListItem = ({ huntName, voteCount, linkTo }) => {
     }, [votes, userHuntStatus])
 
     
+    const signupHandler = () => setUserHuntStatus(1)
+
+
     
     // FIXME add didUserVote property in order to prevent double-counting
       
       // TODO conditionally render signup button based on status 
-      let signupButton;
-      if (!userHuntStatus) {
-        // signupButton = <button onClick={signupHandler}>Sign Up!</button>;
-        signupButton = <button>Sign Up!</button>;
-      } else if (userHuntStatus === 1) {
-        signupButton = <button>See You There!</button>;
-      } else if (userHuntStatus === 2) {
-        signupButton = <button>In Progress!</button>;
-      } else if (userHuntStatus === 3) {
-        signupButton = <button>Completed!</button>;
-      } 
+      const signupButton = () => {
+        if (!userHuntStatus) return <button onClick={signupHandler}>Sign Up!</button>;
+        if (userHuntStatus === 1) return <button>See You There!</button>;
+        if (userHuntStatus === 2) return <button>In Progress!</button>;
+        if (userHuntStatus === 3) return <button>Completed!</button>;
+      }
     
-    // TODO include number of people signed up for hunt 
+    // TODO include number of people signed up for hunt ?
     return (
         <>
-          <div className="list-item-container">
+          <div onClick={(e) => huntItemClickHandler(pos, huntName)} className="list-item-container">
             <div className="listItem">
                 <div className="text-container">
                     <div className="title">
@@ -78,11 +89,11 @@ const HuntListItem = ({ huntName, voteCount, linkTo }) => {
                     </div>
                     <div className="voting-buttons-container">
                       <button className="upvote-button" onClick={upvoteHandler}>&#8593;</button>
-                      <div className={votes > 0 ? "voteCountGreen" : "voteCountRed"}>{voteCount}</div>
+                      <div className={votes > 0 ? "voteCountGreen" : "voteCountRed"}>{votes}</div>
                       <button className="downvote-button" onClick={downvoteHandler}>&#8595;</button>
                     </div>
                     <div>
-                      {signupButton}
+                      {signupButton()}
                     </div>
                 </div>
                 

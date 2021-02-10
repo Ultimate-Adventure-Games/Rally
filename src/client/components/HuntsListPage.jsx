@@ -56,6 +56,7 @@ const HuntsListPage = props => {
         lng: -97.7419488
       },
       // FIXME is there a separate hunt row entry for every user? 
+      // user who made the hunt 
       user_id: 1234,
     },
     {
@@ -69,6 +70,7 @@ const HuntsListPage = props => {
         lng: -97.7453488
       },
       // FIXME is there a separate hunt row entry for every user? 
+      // user who made the hunt 
       user_id: 1234,
     },
 ]
@@ -96,7 +98,20 @@ const HuntsListPage = props => {
     }, [])
 
 
-
+    const [infoWindow, setInfoWindow] = useState([]);
+    
+    const huntItemClickHandler = (pos, huntName) => {
+      console.log('position', pos);
+      return setInfoWindow(
+        <InfoWindow position={pos}>
+          <div className="huntMapInfo">
+            <h4 className="huntMapInfoName">{huntName}</h4>
+            {/* <div>{hunt.hunt_pplGoing} People Going!</div>
+            <div>{hunt.hunt_votes} Total Votes!</div> */}
+          </div> 
+        </InfoWindow>
+      );
+    }
 
     // declare empty huntList array 
     const huntList = [];
@@ -107,32 +122,17 @@ const HuntsListPage = props => {
         <HuntListItem
         className=""
         key={huntObj.hunt_id}
+        huntId={huntObj.hunt_id}
         huntName={huntObj.hunt_name}
         voteCount={huntObj.hunt_votes}
+        pos={huntObj.pos}
         linkTo={'/hunt/' + huntObj.hunt_id}
+        huntItemClickHandler={huntItemClickHandler}
         >
         </HuntListItem>
       )
     })
 
-
-    const MapIcon = hunt => (
-      // <>
-        <Marker position={hunt.pos}>
-          <InfoWindow 
-          visible={true}
-          >
-            <div className="huntMapInfo">
-              <div>{hunt.hunt_name}</div>
-              <div>{hunt.hunt_pplGoing} People Going!</div>
-              <div>{hunt.hunt_votes} Total Votes!</div>
-            </div> 
-          </InfoWindow>
-        </Marker>
-      // </>
-    )
-
-    
 
     return(
       <div className='huntListContainer'>
@@ -144,23 +144,13 @@ const HuntsListPage = props => {
                     {
                         huntsTest.map(hunt => (
                           <div>
-                          <Marker position={hunt.pos}>
-                            <InfoWindow 
-                            visible={true}
-                            >
-                              <div className="huntMapInfo">
-                                <h4 className="huntMapInfoName">{hunt.hunt_name}</h4>
-                                <div>{hunt.hunt_pplGoing} People Going!</div>
-                                <div>{hunt.hunt_votes} Total Votes!</div>
-                              </div> 
-                            </InfoWindow>
-                          </Marker>
+                          <Marker position={hunt.pos}/>
                           </div>
                           ))
                           
                           
                     }
-                    
+                  {infoWindow}
                 </GoogleMap>
                 : <p>loading map...</p>
           }
