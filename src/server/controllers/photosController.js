@@ -6,9 +6,9 @@ const photosController = {};
 //create
 // createPhoto(user_id, event_id)
 photosController.createPhoto = (req, res, next) => {
-  const params = [req.body.user_id, req.body.event_id];
+  const params = [req.body.user_id, req.body.event_id, req.body.photo_src];
   const queryText =
-    "INSERT INTO public.photos (user_id, event_id) VALUES ($1, $2);";
+    "INSERT INTO public.photos (user_id, event_id, photo_src) VALUES ($1, $2, $3);";
 
   db.query(queryText, params)
     .then((res) => next())
@@ -23,7 +23,7 @@ photosController.getPhotosByEvent = (req, res, next) => {
 
   db.query(queryText, params)
     .then((result) => {
-      res.locals.user = result.rows;
+      res.locals.photos = result.rows;
       return next();
     })
     .catch((err) => next(err));
@@ -31,12 +31,12 @@ photosController.getPhotosByEvent = (req, res, next) => {
 
 // getPhotoByUserAndEvent(event_id, user_id) (verify if you completed event or not)
 photosController.getPhotoByUserAndEvent = (req, res, next) => {
-  const params = [req.params.user_id, req.params.event_id];
+  const params = [req.body.user_id, req.body.event_id];
   const queryText = "SELECT * FROM public.photos WHERE user_id = $1 AND event_id = $2;";
-
+  
   db.query(queryText, params)
     .then((result) => {
-      res.locals.user = result.rows;
+      res.locals.photo = result.rows;
       return next();
     })
     .catch((err) => next(err));

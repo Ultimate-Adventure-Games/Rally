@@ -9,6 +9,11 @@ const router = express.Router();
 //-----------------------------------USERS-------------------------------
 //-------GET-----
 //get route for auth, set body.user_name and body.user_password
+router.get("/users/:user_id", usersController.getUser, (req, res) => {
+    return res.status(200).json(res.locals.user)
+})
+
+//get route for auth, set body.user_name and body.user_password
 router.get("/users/auth/:user_name/:user_password", usersController.userAuth, (req, res) => {
     return res.status(200).json(res.locals.user)
 })
@@ -19,16 +24,6 @@ router.post("/users", usersController.createUser, (req, res) => {
   return res.status(200).send("successfully created user");
 });
 
-//post route for update user by id, set body.user_name
-router.post("/users/:user_id", usersController.updateUserName, (req, res) => {
-  return res.status(200).send("successfully updated user");
-});
-
-//----DELETE----
-//delete route for delete user by id
-router.delete("/users/:user_id", usersController.deleteUser, (req, res) => {
-  return res.status(200).send("successfully deleted user");
-});
 
 //-----------------------------------SUBS-------------------------------
 //-------GET-----
@@ -85,14 +80,14 @@ router.get("/events/:event_id", eventsController.getEventByEventId, (req, res) =
 })
 
 //get all events by hunt, set hunt_id
-router.get("/events/hunt/:hunt_id", eventsController.getEvents, (req, res) => {
+router.get("/events/getEventsByHunt/:hunt_id", eventsController.getEvents, (req, res) => {
   return res.status(200).json(res.locals.events)
 })
 
 
 //------POST-----
 //create event, set event_name event_index event_lat event_long event_riddle hunt_id
-router.post("/events", eventsController.createEvent, (req, res) => {
+router.post("/events/createEvent", eventsController.createEvent, (req, res) => {
   return res.status(200).send("successfully created event");
 });
 
@@ -100,7 +95,7 @@ router.post("/events", eventsController.createEvent, (req, res) => {
 //-----------------------------------PHOTOS-------------------------------
 //-------GET-----
 //get photos by event, set event_id
-router.get("/photos/:event_id", photosController.getPhotosByEvent, (req, res) => {
+router.get("/photos/getPhotos/:event_id", photosController.getPhotosByEvent, (req, res) => {
     return res.status(200).json(res.locals.photos)
 })
 
