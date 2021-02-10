@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const HuntListItem = ({ title, description, upvoteHandler, downvoteHandler, linkTo }) => {
+const HuntListItem = ({ title, upvoteHandler, downvoteHandler, linkTo }) => {
 
 
     return (

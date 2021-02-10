@@ -40,6 +40,31 @@ const HuntsListPage = props => {
       
     })
 
+// DUMMY OBJECT
+    const huntsTest = [
+    {
+      hunt_id: 1,
+      hunt_name: 'Alcatraz Hunt',
+      hunt_votes: 65,
+      hunt_splash: '',
+      hunt_lat: 37.8270,
+      hunt_long: -122.4230,
+      // FIXME is there a separate hunt row entry for every user? 
+      user_id: 1234,
+    },
+    {
+      hunt_id: 2,
+      hunt_name: 'Ultimate SF Hunt',
+      hunt_votes: 50,
+      hunt_splash: '',
+      hunt_lat: 30.2674331,
+      hunt_long: -97.7419488,
+      // FIXME is there a separate hunt row entry for every user? 
+      user_id: 1234,
+    },
+  
+]
+
 
 
     // declare empty huntList array 
@@ -64,16 +89,14 @@ const HuntsListPage = props => {
         <HuntListItem
         className=""
         key={huntObj.hunt_id}
-        huntObj={huntObj}>
+        huntObj={huntObj}
+        >
         </HuntListItem>
       )
     })
 
     return(
-        <div className="huntList">
-            <h1>Hunt List Page</h1>
-            <div ></div>
-        </div>
+      <div className='list-item-section'>{huntList}</div>
     );
 
 }

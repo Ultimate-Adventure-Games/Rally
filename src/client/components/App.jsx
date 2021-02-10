@@ -61,8 +61,8 @@ class App extends Component {
     // FIXME hardcoded for now (Alcatraz, SF)
     userLat: 37.8270,
     userLng: -122.4230,
-    hunts: -122.4230,
-    completedHunts: -122.4230,
+    hunts: {},
+    completedHunts: {},
     setCurrentUser: this.setCurrentUser,
     setHunts: this.setHunts,
     setCompletedHunts: this.setCompletedHunts,

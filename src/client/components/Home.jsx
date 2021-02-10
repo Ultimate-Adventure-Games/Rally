@@ -9,7 +9,7 @@ const Home = (props) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         // TODO replace API key with environment variable
-        googleMapsApiKey: 'AIzaSyCmu-FkYYE9ggu-4iiJe2PfLvi-86lsx7Y'
+        googleMapsApiKey: 'AIzaSyCstqCZJ4mDXQsOd1MS9-cVCxUG2YSTJHE'
     })
 
     const [map, setMap] = useState(null);
