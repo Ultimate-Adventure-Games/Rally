@@ -33,16 +33,24 @@ const HuntsListPage = props => {
     //   userLng,
     // }
 
-    useEffect(() => {
-      // TODO confirm endpoint
-      axios(`http://localhost:3000/api/hunts`)
-      // TODO determine if the data is already sorted by votes -- if not, sort
-      .then(res => console.log(res.data)) 
-        // .then(res => setHunts(res.data))
-        .catch(err => console.log('GET Error retrieving all hunts in the area'))
-
-      
-    })
+    // useEffect(() => {
+    //   // TODO confirm endpoint
+    //   axios(`http://localhost:3000/api/hunts`)
+    //   // TODO determine if the data is already sorted by votes -- if not, sort 
+    //     .then(res => {
+          
+    //       setHunts(res.data.map(hunt => {
+    //         return  {
+    //           ...hunt,
+    //           pos: {
+    //             lat: hunt.lat,
+    //             lng: hunt.lng,
+    //           }
+    //         }
+    //       }))
+    //     })
+    //     .catch(err => console.log('GET Error retrieving all hunts in the area'))
+    // }, [])
 
 // DUMMY OBJECT
     const huntsTest = [
@@ -52,11 +60,10 @@ const HuntsListPage = props => {
       hunt_votes: 65,
       hunt_pplGoing: 12,
       hunt_splash: '',
-      pos: {
-        lat: 30.2674331,
-        lng: -97.7419488
-      },
+      lat: 30.2674331,
+      lng: -97.7419488,
       // FIXME is there a separate hunt row entry for every user? 
+      // user who made the hunt 
       user_id: 1234,
     },
     {
@@ -65,15 +72,14 @@ const HuntsListPage = props => {
       hunt_votes: 50,
       hunt_pplGoing: 7,
       hunt_splash: '',
-      pos: {
-        lat: 30.2674331,
-        lng: -97.7453488
-      },
+      lat: 30.2674331,
+      lng: -97.7453488,
       // FIXME is there a separate hunt row entry for every user? 
+      // user who made the hunt 
       user_id: 1234,
     },
 ]
-
+    
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.API_KEY
@@ -95,9 +101,26 @@ const HuntsListPage = props => {
     const onMapUnmount = useCallback(map => {
       setMap(null);
     }, [])
+    
+
+    const [infoWindow, setInfoWindow] = useState([]);
+    
+    const huntItemClickHandler = (pos, huntName) => {
+      console.log('position', pos);
+      return setInfoWindow(
+        // FIXME infoWindow doesn't open back up after being closed
+        <InfoWindow position={pos}>
+          <div className="huntMapInfo">
+            <h4 className="huntMapInfoName">{huntName}</h4>
+            {/* <div>{hunt.hunt_pplGoing} People Going!</div>
+            <div>{hunt.hunt_votes} Total Votes!</div> */}
+          </div> 
+        </InfoWindow>
+      );
+    }
 
 
-
+    
 
     // declare empty huntList array 
     const huntList = [];
@@ -108,32 +131,18 @@ const HuntsListPage = props => {
         <HuntListItem
         className=""
         key={huntObj.hunt_id}
+        huntId={huntObj.hunt_id}
         huntName={huntObj.hunt_name}
         voteCount={huntObj.hunt_votes}
+        pplGoing={huntObj.hunt_pplGoing}
+        pos={huntObj.pos}
         linkTo={'/hunt/' + huntObj.hunt_id}
+        huntItemClickHandler={huntItemClickHandler}
         >
         </HuntListItem>
       )
     })
 
-
-    const MapIcon = hunt => (
-      // <>
-        <Marker position={hunt.pos}>
-          <InfoWindow 
-          visible={true}
-          >
-            <div className="huntMapInfo">
-              <div>{hunt.hunt_name}</div>
-              <div>{hunt.hunt_pplGoing} People Going!</div>
-              <div>{hunt.hunt_votes} Total Votes!</div>
-            </div> 
-          </InfoWindow>
-        </Marker>
-      // </>
-    )
-
-    
 
     return(
       <div className='huntListContainer'>
@@ -145,23 +154,13 @@ const HuntsListPage = props => {
                     {
                         huntsTest.map(hunt => (
                           <div>
-                          <Marker position={hunt.pos}>
-                            <InfoWindow 
-                            visible={true}
-                            >
-                              <div className="huntMapInfo">
-                                <h4 className="huntMapInfoName">{hunt.hunt_name}</h4>
-                                <div>{hunt.hunt_pplGoing} People Going!</div>
-                                <div>{hunt.hunt_votes} Total Votes!</div>
-                              </div> 
-                            </InfoWindow>
-                          </Marker>
+                          <Marker position={hunt.pos}/>
                           </div>
                           ))
                           
                           
                     }
-                    
+                  {infoWindow}
                 </GoogleMap>
                 : <p>loading map...</p>
           }
