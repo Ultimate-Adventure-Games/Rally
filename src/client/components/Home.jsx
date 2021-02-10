@@ -1,5 +1,8 @@
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppContext } from './ContextProvider';
+import HuntListItem from './HuntListItem';
 
 const Home = (props) => {
 
@@ -10,10 +13,15 @@ const Home = (props) => {
     })
 
     const [map, setMap] = useState(null);
+
+    const {
+      userLat,
+      userLng
+    } = useContext(AppContext);
     
     const center = {
-      lat: 37.8270, 
-      lng: -122.4230
+      userLat: 37.8270, 
+      userLng: -122.4230
     };
 
     const onLoad = useCallback(map => {
@@ -37,7 +45,9 @@ const Home = (props) => {
                     <p>Loading map...</p>
 
             }
-
+            <Link to={'/hunt/1'}>Test</Link>
+            
+            <HuntListItem title="Test Title" description="this is my description"/>
         </>
     );
 }
