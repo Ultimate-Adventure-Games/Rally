@@ -5,15 +5,21 @@ import { AppContext } from './ContextProvider';
 
 
 // TODO could linkTo just be based on key (aka hunt_id)
-const HuntListItem = ({ huntId, huntName, voteCount, linkTo, huntItemClickHandler, pos }) => {
+const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler, pos, pplGoing }) => {
 
   // deconstruct completedHunts, runningHunts, potentialHunts
   const {
     potentialHunts,
     runningHunts,
     completedHunts,
+    setPotentialHunts,
+    setRunningHunts,
+    setCompletedHunts,
   } = useContext(AppContext);
     
+    const [potential, setPotential] = useState(potentialHunts)
+    const [running, setRunning] = useState(runningHunts)
+    const [completed, setCompleted] = useState(completedHunts)
       
     // default to 0 
     const [userHuntStatus, setUserHuntStatus] = useState(0);
@@ -27,12 +33,12 @@ const HuntListItem = ({ huntId, huntName, voteCount, linkTo, huntItemClickHandle
        * = 0 not signed up 
        */
     // FIXME not the most efficient time complexity -- fix later 
-    // TODO confirm format of completedHunts object 
+    // TODO confirm format of completedHunts array -- will it contain huntId's? 
     useEffect(() => {
-      // if (completedHunts.includes(linkTo)) setUserHuntStatus(3)
-      // else if (runningHunts.includes(linkTo)) setUserHuntStatus(2)
-      // else if (potentialHunts.includes(linkTo)) setUserHuntStatus(1)
-      // else setUserHuntStatus(0)
+      if (completedHunts.includes(huntId)) setUserHuntStatus(3)
+      else if (runningHunts.includes(huntId)) setUserHuntStatus(2)
+      else if (potentialHunts.includes(huntId)) setUserHuntStatus(1)
+      else setUserHuntStatus(0)
       setUserHuntStatus(0)
     }, userHuntStatus)
       
@@ -41,6 +47,23 @@ const HuntListItem = ({ huntId, huntName, voteCount, linkTo, huntItemClickHandle
     
     // TODO best way to figure out if user already voted? 
     const [userVoted, setUserVoted] = useState(false);
+
+
+    
+
+    useEffect(() => {
+      // if votes or userHuntStatus changes -- submit PUT request to update db entry
+    }, [votes, userHuntStatus])
+
+    
+    const signupHandler = () => {
+      // update status state hook in order to conditionally render the appropriate button
+      // setUserHuntStatus(1)
+      // update array of potentialHunts (hunts user signed up for) in local state first 
+      setPotential([...potential, huntId])
+      // replace array in context with the updated array from local state
+      setPotentialHunts(potential);
+    }
 
 
     const upvoteHandler = () => {
@@ -58,14 +81,6 @@ const HuntListItem = ({ huntId, huntName, voteCount, linkTo, huntItemClickHandle
         // TODO update votes and boolean in global context
       }
     }
-
-    useEffect(() => {
-      // if votes or userHuntStatus changes -- submit PUT request to update db entry
-    }, [votes, userHuntStatus])
-
-    
-    const signupHandler = () => setUserHuntStatus(1)
-
 
     
     // FIXME add didUserVote property in order to prevent double-counting
@@ -92,6 +107,9 @@ const HuntListItem = ({ huntId, huntName, voteCount, linkTo, huntItemClickHandle
                       <div className={votes > 0 ? "voteCountGreen" : "voteCountRed"}>{votes}</div>
                       <button className="downvote-button" onClick={downvoteHandler}>&#8595;</button>
                     </div>
+                    {/* <div className="pplGoing-container">
+                      <b>{pplGoing}</b> people going to this event!
+                    </div> */}
                     <div>
                       {signupButton()}
                     </div>
