@@ -1,5 +1,7 @@
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import React, { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
+import HuntListItem from './HuntListItem';
 
 const Home = (props) => {
 
@@ -29,7 +31,9 @@ const Home = (props) => {
                     <p>Loading map...</p>
 
             }
-
+            <Link to={'/hunt/1'}>Test</Link>
+            
+            <HuntListItem title="Test Title" description="this is my description"/>
         </>
     );
 }
