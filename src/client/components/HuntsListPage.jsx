@@ -33,24 +33,24 @@ const HuntsListPage = props => {
     //   userLng,
     // }
 
-    useEffect(() => {
-      // TODO confirm endpoint
-      axios(`http://localhost:3000/api/hunts`)
-      // TODO determine if the data is already sorted by votes -- if not, sort 
-        .then(res => {
+    // useEffect(() => {
+    //   // TODO confirm endpoint
+    //   axios(`http://localhost:3000/api/hunts`)
+    //   // TODO determine if the data is already sorted by votes -- if not, sort 
+    //     .then(res => {
           
-          setHunts(res.data.map(hunt => {
-            return  {
-              ...hunt,
-              pos: {
-                lat: hunt.lat,
-                lng: hunt.lng,
-              }
-            }
-          }))
-        })
-        .catch(err => console.log('GET Error retrieving all hunts in the area'))
-    }, [])
+    //       setHunts(res.data.map(hunt => {
+    //         return  {
+    //           ...hunt,
+    //           pos: {
+    //             lat: hunt.lat,
+    //             lng: hunt.lng,
+    //           }
+    //         }
+    //       }))
+    //     })
+    //     .catch(err => console.log('GET Error retrieving all hunts in the area'))
+    // }, [])
 
 // DUMMY OBJECT
     const huntsTest = [
