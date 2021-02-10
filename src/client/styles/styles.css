@@ -1,0 +1,33 @@
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.listItem {
+    background-color: gray;
+    min-height: 75px;
+    padding: 10px;
+    width: 100%;
+}
+
+.listItem .text-container {
+    
+}
+
+.listItem .navigate-container {
+
+}
+
+.listItem .voting-buttons-container {
+
+}
+
+.listItem .title {
+    margin: 5px 0;
+    font-weight: bold;
+    color: green;
+}
+
+.listItem .description {
+    margin: 5px 0;
+}
