@@ -22,7 +22,7 @@ huntsController.getHunt = (req, res, next) => {
 
   db.query(queryText, params)
     .then((result) => {
-      res.locals.user = result.rows;
+      res.locals.hunt = result.rows;
       return next();
     })
     .catch((err) => next(err));
