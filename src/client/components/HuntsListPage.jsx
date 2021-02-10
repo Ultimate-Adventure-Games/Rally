@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AppContext } from './ContextProvider';
+import HuntListItem from './HuntListItem';
 
 const HuntsListPage = props => {
     // deconstruct huntList and setHuntList from context 
@@ -30,15 +31,15 @@ const HuntsListPage = props => {
     //   userLng,
     // }
 
-    useEffect(() => {
-      // TODO confirm endpoint
-      axios(`http://localhost:3000/getAllHunts/`)
-      // TODO determine if the data is already sorted by votes -- if not, sort 
-        .then(res => setHunts(res.data))
-        .catch(err => console.log('GET Error retrieving all hunts in the area'))
+    // useEffect(() => {
+    //   // TODO confirm endpoint
+    //   axios(`http://localhost:3000/getAllHunts/`)
+    //   // TODO determine if the data is already sorted by votes -- if not, sort 
+    //     .then(res => setHunts(res.data))
+    //     .catch(err => console.log('GET Error retrieving all hunts in the area'))
 
       
-    })
+    // })
 
 // DUMMY OBJECT
     const huntsTest = [
@@ -62,34 +63,25 @@ const HuntsListPage = props => {
       // FIXME is there a separate hunt row entry for every user? 
       user_id: 1234,
     },
-  
 ]
+
+
+
 
 
 
     // declare empty huntList array 
     const huntList = [];
     // loop and push to array a HuntListItem component 
-    hunts.forEach(huntObj => {
-      // FIXME not the most efficient time complexity -- fix later 
-      // FIXME add didUserVote property in order to prevent double-counting
-      // TODO confirm format of completedHunts object 
-      /**
-       * userHuntStatus -> 
-       * 3 = completed 
-       * 2 = running
-       * 1 = potential 
-       * = 0 not signed up 
-       */
-      if (completedHunts.includes(huntObj.hunt_name)) huntObj.userHuntStatus = 3;
-      else if (runningHunts.includes(huntObj.hunt_name)) huntObj.userHuntStatus = 2;
-      else if (potentialHunts.includes(huntObj.hunt_name)) huntObj.userHuntStatus = 1;
-      else huntObj.userHuntStatus = 0;
+    // TODO switch back to hunts Context array
+    huntsTest.forEach(huntObj => {
       huntList.push(
         <HuntListItem
         className=""
         key={huntObj.hunt_id}
-        huntObj={huntObj}
+        huntName={huntObj.hunt_name}
+        voteCount={huntObj.hunt_votes}
+        linkTo={'/hunt/' + huntObj.hunt_id}
         >
         </HuntListItem>
       )

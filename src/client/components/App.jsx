@@ -62,7 +62,7 @@ class App extends Component {
     userLat: 37.8270,
     userLng: -122.4230,
     hunts: {},
-    completedHunts: {},
+    completedHunts: [],
     setCurrentUser: this.setCurrentUser,
     setHunts: this.setHunts,
     setCompletedHunts: this.setCompletedHunts,
