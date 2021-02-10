@@ -35,7 +35,8 @@ huntsController.getAllHunts = (req, res, next) => {
   //promise based syntax
   db.query(queryText)
     .then((result) => {
-      res.locals.users = result.rows;
+      console.log('hit')
+      res.locals.hunts = result.rows;
       return next();
     })
     .catch((err) => next(err));
