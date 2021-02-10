@@ -8,9 +8,8 @@ const HuntPage = (props) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.API_KEY
-        
-    });
 
+    });
 
     const [map, setMap] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -27,9 +26,15 @@ const HuntPage = (props) => {
         if (!map) return;
         const { pos, title, description } = events.find(event => event.id === id);
         const { lat, lng } = pos;
-        setSelectedEvent(<InfoWindow position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div></></InfoWindow>)
+        setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div></></InfoWindow>)
         map.setCenter({ lat, lng })
     };
+
+    const uploadPhotoHandler = (file, id) => {
+        const { pos, title, description } = events.find(event => event.id === id);
+        const { lat, lng } = pos;
+        setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div><div><img style={{ width: '50%', height: '50%' }} src={URL.createObjectURL(file)} /></div></></InfoWindow>)
+    }
 
     /*
      * Begin Stub Data
@@ -40,7 +45,7 @@ const HuntPage = (props) => {
     }
     const events = [{
         id: 0,
-        title: 'Shakespeare Bar',   
+        title: 'Shakespeare Bar',
         description: '$7 pitchers and that weird Austin vibe. Take a picture with the ice cream truck.',
         pos: {
             lat: 30.2674331,
@@ -78,10 +83,8 @@ const HuntPage = (props) => {
                     <GoogleMap zoom={16} mapContainerStyle={{ height: '500px', width: '100%' }} center={center} onLoad={onMapLoad} onUnmount={onMapUnmount}>
                         {/* Load Markers */}
                         {
-                            events.map(event => <Marker position={event.pos} />)
+                            events.map(event => <Marker key={event.id} position={event.pos} />)
                         }
-                        {/* <InfoWindow position={{lat: 30.2671304, lng: -97.7411892}}><p>Sup dude</p></InfoWindow> */}
-                        {/*  Display Info Window of Selected Event */}
                         {
                             selectedEvent ? selectedEvent : <></>
                         }
@@ -90,7 +93,7 @@ const HuntPage = (props) => {
             }
             <div className='list-item-section'>
                 {
-                    events.map(event => <EventListItem title={event.title} description={event.description} onSelect={onSelectEventHandler.bind(this, event.id)} />)
+                    events.map(event => <EventListItem key={event.id} id={event.id} title={event.title} uploadPhotoHandler={uploadPhotoHandler} description={event.description} onSelect={onSelectEventHandler.bind(this, event.id)} />)
                 }
             </div>
         </>

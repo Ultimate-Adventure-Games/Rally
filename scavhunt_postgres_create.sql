@@ -22,8 +22,8 @@ CREATE TABLE public.hunts (
     "hunt_des" varchar NOT NULL,
     "hunt_votes" int, 
     "hunt_banner" varchar,
-    "hunt_lat" varchar,
-    "hunt_long" varchar,
+    "hunt_lat" float,
+    "hunt_long" float,
     "user_id" int,
     PRIMARY KEY ("hunt_id")
 ) WITH (
@@ -35,8 +35,8 @@ CREATE TABLE public.events (
     "event_id" serial NOT NULL,
     "event_name" varchar NOT NULL,
     "event_index" int NOT NULL,
-    "event_lat" varchar NOT NULL,
-    "event_long" varchar NOT NULL, 
+    "event_lat" float NOT NULL,
+    "event_long" float NOT NULL, 
     "event_riddle" varchar,
     "hunt_id" int,
     PRIMARY KEY ("event_id")
@@ -73,9 +73,11 @@ ALTER TABLE public.subs ADD CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCE
 ALTER TABLE public.subs ADD CONSTRAINT fk_hunt FOREIGN KEY ("hunt_id") REFERENCES public.hunts("hunt_id");
 
 INSERT INTO public.users (user_name, password) VALUES ('bill', 'nye');
-INSERT INTO public.hunts (hunt_name, hunt_des, hunt_votes, hunt_banner, hunt_lat, hunt_long, user_id) VALUES ('SF Bar Crawl', 'Whacky barcrawl around SF!', 0, '', '37.7975° N', '122.4065° W', 1);
-INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Vesuvio Cafe', 1, '37.7975° N', '122.4065° W', 'Have a drink at the bar', 1 );
-INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Devils Acre', 1, '37.7977° N', '122.4062° W', 'Have a drink at the bar', 1 );
+INSERT INTO public.hunts (hunt_name, hunt_des, hunt_votes, hunt_banner, hunt_lat, hunt_long, user_id) VALUES ('Chris D Austin Ultimate', 'Whacky barcrawl around Austin!', 65, '', 30.2674331, -97.7419488, 1);
+INSERT INTO public.hunts (hunt_name, hunt_des, hunt_votes, hunt_banner, hunt_lat, hunt_long, user_id) VALUES ('South by Southwest', 'SBSW!', 32, '', 30.2674331, -97.7453488, 1);
+INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Shakespeare Bar', 0, 30.2674331, -97.7419488, '$7 pitchers and that weird Austin vibe. Take a picture with the ice cream truck.', 1 );
+INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('The Jackalope', 1, 30.2671304, -97.7411892, 'Take a picture with the DJ.', 1 );
+INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('YETI Austin Flagship', 2, 30.2593641, -97.7485306, 'Didnt know the cooler brand had a bar? Cross the river to see it. Take a picture with the yeti.', 1 );
 
 INSERT INTO public.photos (photo_src, event_id, user_id) VALUES ('https://assets3.thrillist.com/v1/image/1191380/1584x1056/crop;jpeg_quality=60;progressive.jpg', 1, 1);
 

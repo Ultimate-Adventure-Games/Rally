@@ -13,16 +13,16 @@ router.get("/users/:user_id", usersController.getUser, (req, res) => {
     return res.status(200).json(res.locals.user)
 })
 
-//get route for auth, set body.user_name and body.user_password
-router.get("/users/auth/:user_name/:user_password", usersController.userAuth, (req, res) => {
-    return res.status(200).json(res.locals.user)
-})
-
 //------POST-----
 //post route for create user, set body.username, password, 
 router.post("/users", usersController.createUser, (req, res) => {
   return res.status(200).send("successfully created user");
 });
+
+//post route for auth, set body.user_name and body.user_password
+router.post("/users/auth", usersController.userAuth, (req, res) => {
+  return res.status(200).json(res.locals.user)
+})
 
 
 //-----------------------------------SUBS-------------------------------
