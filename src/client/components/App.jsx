@@ -5,6 +5,7 @@ import HuntPage from "./HuntPage";
 import HuntsListPage from "./HuntsListPage";
 import { AppContext } from './ContextProvider';
 import '../styles/styles.css'
+import 'normalize.css';
 
 
 
