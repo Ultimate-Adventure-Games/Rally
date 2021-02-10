@@ -8,7 +8,7 @@ const userHuntsController = {};
 userHuntsController.signUpForHunt = (req, res, next) => {
   const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
-    "INSERT INTO public.subs (user_id, hunt_id) VALUES ($1, $2);";
+    "INSERT INTO public.subs (user_id, hunt_id, status) VALUES ($1, $2, 'SIGNED UP');";
 
   db.query(queryText, params)
     .then((res) => next())
@@ -32,7 +32,7 @@ userHuntsController.getAllUsersSignedUpForHunt = (req, res, next) => {
 // getAllUsersDoingHunt(hunt_id)
 userHuntsController.getAllUsersDoingHunt = (req, res, next) => {
   const params = [req.params.hunt_id];
-  const queryText = "SELECT * FROM public.subs WHERE hunt_id = $1 AND progress = 'started';";
+  const queryText = "SELECT * FROM public.subs WHERE hunt_id = $1 AND status = 'started';";
 
   db.query(queryText, params)
     .then((result) => {
@@ -45,7 +45,7 @@ userHuntsController.getAllUsersDoingHunt = (req, res, next) => {
 // getAllUsersCompletedHunt(hunt_id)
 userHuntsController.getAllUsersCompletedHunt = (req, res, next) => {
   const params = [req.params.hunt_id];
-  const queryText = "SELECT * FROM public.subs WHERE hunt_id = $1 AND progress = 'completed';";
+  const queryText = "SELECT * FROM public.subs WHERE hunt_id = $1 AND status = 'completed';";
 
   db.query(queryText, params)
     .then((result) => {
@@ -59,9 +59,9 @@ userHuntsController.getAllUsersCompletedHunt = (req, res, next) => {
 //update
 // startHunt(user_id, hunt_id)
 userHuntsController.startHunt = (req, res, next) => {
-  const params = [req.body.user_id, req.params.hunt_id];
+  const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
-    "UPDATE public.subs SET progress = 'started' WHERE user_id = $1 AND  hunt_id = $2;";
+    "UPDATE public.subs SET status = 'started' WHERE user_id = $1 AND  hunt_id = $2;";
 
   db.query(queryText, params)
     .then((result) => {
@@ -73,9 +73,9 @@ userHuntsController.startHunt = (req, res, next) => {
 
 // completeHunt(user_id, hunt_id)
 userHuntsController.completeHunt = (req, res, next) => {
-  const params = [req.body.user_id, req.params.hunt_id];
+  const params = [req.body.user_id, req.body.hunt_id];
   const queryText =
-    "UPDATE public.subs SET progress = 'completed' WHERE user_id = $1 AND  hunt_id = $2;";
+    "UPDATE public.subs SET status = 'completed' WHERE user_id = $1 AND  hunt_id = $2;";
 
   db.query(queryText, params)
     .then((result) => {
