@@ -4,12 +4,14 @@ import { Link, useParams } from 'react-router-dom';
 import EventListItem from './EventListItem';
 
 const HuntPage = (props) => {
-
     const { id } = useParams();
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: ''
+        googleMapsApiKey: process.env.API_KEY
+        
     });
+
+
     const [map, setMap] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
 

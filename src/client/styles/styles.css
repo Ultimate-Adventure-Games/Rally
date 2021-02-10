@@ -36,9 +36,32 @@ body {
 
 .listItem .voting-buttons-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-bottom: 5px;
 }
+
+.listItem .upvote-button {
+  background-color: green;
+  color: white;
+  margin-right: 2px;
+}
+
+.listItem .downvote-button {
+  background-color: red;
+  color: white;
+  margin-left: 2px;
+}
+
+.listItem .voteCountGreen {
+  color: green;
+}
+
+.listItem .voteCountRed {
+  color: red;
+}
+
 
 .listItem .title {
     margin: 5px 0;
@@ -50,3 +73,13 @@ body {
     margin: 5px 0;
     font-size: 14px
 }
+
+.huntMapInfo {
+  background: white;
+  padding: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
