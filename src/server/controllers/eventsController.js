@@ -6,9 +6,9 @@ const eventsController = {};
 //create
 // createEvent(user_id, hunt_id)
 eventsController.createEvent = (req, res, next) => {
-  const params = [req.body.user_id, req.body.hunt_id];
+  const params = [req.body.event_name, req.body.event_index, req.body.event_lat, req.body.event_long, req.body.event_riddle, req.body.hunt_id];
   const queryText =
-    "INSERT INTO public.events (user_id, hunt_id) VALUES ($1, $2);";
+    "INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ($1, $2, $3, $4, $5, $6);";
 
   db.query(queryText, params)
     .then((res) => next())
@@ -43,8 +43,8 @@ eventsController.getEventByHuntId = (req, res, next) => {
 };
 
 eventsController.getEvents = (req, res, next) => {
- 
-  const queryText = "SELECT * FROM public.events";
+ const params = [req.params.hunt_id]
+  const queryText = "SELECT * FROM public.events WHERE hunt_id = $1;";
 
   db.query(queryText, params)
     .then((result) => {
