@@ -9,6 +9,7 @@ export const AppContext = React.createContext({
   potentialHunts: [],
   runningHunts: [],
   completedHunts: [],
+  setCurrentUser: () => {},
   setUserLat: () => {},
   setUserLng: () => {},
   setHunts: () => {},
