@@ -1,33 +1,52 @@
 body {
     height: 100%;
     width: 100%;
+    margin: 0;
+}
+
+.list-item-section {
+    padding: 10px 0;
+}
+
+.list-item-container {
+    padding: 10px;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .listItem {
-    background-color: gray;
     min-height: 75px;
-    padding: 10px;
+    /* padding: 10px; */
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .listItem .text-container {
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .listItem .navigate-container {
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .listItem .voting-buttons-container {
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .listItem .title {
     margin: 5px 0;
     font-weight: bold;
-    color: green;
+    font-size: 20px;
 }
 
 .listItem .description {
     margin: 5px 0;
+    font-size: 14px
 }

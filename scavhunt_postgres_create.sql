@@ -47,6 +47,7 @@ CREATE TABLE public.events (
 CREATE TABLE public.photos (
     "photo_id" serial NOT NULL,
     "photo_src" varchar NOT NULL,
+    "user_id" int NOT NULL,
     "event_id" int NOT NULL,
     PRIMARY KEY ("photo_id")
 ) WITH (
@@ -74,7 +75,8 @@ ALTER TABLE public.subs ADD CONSTRAINT fk_hunt FOREIGN KEY ("hunt_id") REFERENCE
 INSERT INTO public.users (user_name, password) VALUES ('bill', 'nye');
 INSERT INTO public.hunts (hunt_name, hunt_des, hunt_votes, hunt_splash, hunt_lat, hunt_long, user_id) VALUES ('SF Bar Crawl', 'Whacky barcrawl around SF!', 0, '', '37.7975° N', '122.4065° W', 1);
 INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Vesuvio Cafe', 1, '37.7975° N', '122.4065° W', 'Have a drink at the bar', 1 );
+INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Devils Acre', 1, '37.7977° N', '122.4062° W', 'Have a drink at the bar', 1 );
 
-INSERT INTO public.photos (photo_src, event_id) VALUES ('https://assets3.thrillist.com/v1/image/1191380/1584x1056/crop;jpeg_quality=60;progressive.jpg', 1);
+INSERT INTO public.photos (photo_src, event_id, user_id) VALUES ('https://assets3.thrillist.com/v1/image/1191380/1584x1056/crop;jpeg_quality=60;progressive.jpg', 1, 1);
 
 INSERT INTO public.subs (user_id, hunt_id, status) VALUES (1, 1, 'SIGNED UP')

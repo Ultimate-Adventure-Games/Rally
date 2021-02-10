@@ -7,6 +7,10 @@ const HuntListItem = ({ title, description, upvoteHandler, downvoteHandler, link
     return (
         <>
             <div className="listItem">
+                <div className="voting-buttons-container">
+                    <button onClick={upvoteHandler}>&#8593;</button>
+                    <button onClick={downvoteHandler}>&#8595;</button>
+                </div>
                 <div className="text-container">
                     <div className="title">
                         {title}
@@ -14,10 +18,6 @@ const HuntListItem = ({ title, description, upvoteHandler, downvoteHandler, link
                     <div className="description">
                         {description}
                     </div>
-                </div>
-                <div className="voting-buttons-container">
-                    <button onClick={upvoteHandler}>Upvote</button>
-                    <button onClick={downvoteHandler}>Downvote</button>
                 </div>
                 <div className="navigate-container">
                     <div className="navigate">
