@@ -3,7 +3,8 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import HuntPage from "./HuntPage";
 import HuntsListPage from "./HuntsListPage";
-import Signup from "./Signup"
+import Signup from "./Signup";
+import CreateHunt from "./CreateHunt";
 import { AppContext } from './ContextProvider';
 import Login from './Login'
 import '../styles/styles.css'
@@ -82,6 +83,7 @@ class App extends Component {
             <Route path="/hunts" component={HuntsListPage} />
             <Route path="/signup" component={Signup} />
             <Route path="/hunt/:id" component={HuntPage} />
+            <Route path="/createhunt" component={CreateHunt} />
             <Route path="/" component={Login} />
           </Switch>
         </AppContext.Provider>

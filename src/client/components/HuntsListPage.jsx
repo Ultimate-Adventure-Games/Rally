@@ -1,6 +1,7 @@
 import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import React, { useContext, useEffect, useState, useCallback } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { AppContext } from './ContextProvider';
 import HuntListItem from './HuntListItem';
 
@@ -165,6 +166,7 @@ const HuntsListPage = props => {
                 : <p>loading map...</p>
           }
         <div className='list-item-section'>{huntList}</div>
+        <Link to="/createhunt">Create Hunt</Link>
       </div>
     );
 
