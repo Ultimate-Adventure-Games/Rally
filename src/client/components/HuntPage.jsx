@@ -8,9 +8,9 @@ const HuntPage = (props) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.API_KEY
-        
+
     });
-    
+
     const [map, setMap] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -26,17 +26,14 @@ const HuntPage = (props) => {
         if (!map) return;
         const { pos, title, description } = events.find(event => event.id === id);
         const { lat, lng } = pos;
-        setSelectedEvent(<InfoWindow position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div></></InfoWindow>)
+        setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div></></InfoWindow>)
         map.setCenter({ lat, lng })
     };
 
-    // TODO How can I get the ID of the event in here?
     const uploadPhotoHandler = (file, id) => {
-        // // formData.forEach(file=>console.log(file));
-        // console.log(file);
         const { pos, title, description } = events.find(event => event.id === id);
         const { lat, lng } = pos;
-        setSelectedEvent(<InfoWindow position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div><div><img style={{width: '50%', height: '50%'}} src={URL.createObjectURL(file)}/></div></></InfoWindow>)
+        setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{title}</h3><div>{description}</div><div><img style={{ width: '50%', height: '50%' }} src={URL.createObjectURL(file)} /></div></></InfoWindow>)
     }
 
     /*
@@ -48,7 +45,7 @@ const HuntPage = (props) => {
     }
     const events = [{
         id: 0,
-        title: 'Shakespeare Bar',   
+        title: 'Shakespeare Bar',
         description: '$7 pitchers and that weird Austin vibe. Take a picture with the ice cream truck.',
         pos: {
             lat: 30.2674331,
