@@ -1,4 +1,3 @@
-const { Pool } = require("pg");
 const db = require("../models/model.js");
 
 const photosController = {};

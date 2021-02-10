@@ -1,4 +1,3 @@
-const { Pool } = require("pg");
 const db = require("../models/model.js");
 
 const huntsController = {};
@@ -32,7 +31,6 @@ huntsController.getHunt = (req, res, next) => {
 huntsController.getAllHunts = (req, res, next) => {
   const queryText = "SELECT * FROM public.hunts LIMIT 100;";
 
-  //promise based syntax
   db.query(queryText)
     .then((result) => {
       console.log('hit')

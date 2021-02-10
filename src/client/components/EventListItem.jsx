@@ -1,6 +1,11 @@
 import React from 'react';
+import ImageUpload from './ImageUpload';
 
-const EventListItem = ({ title, description, onSelect }) => {
+const EventListItem = ({ title, description, onSelect, uploadPhotoHandler, id }) => {
+
+    const uploadPhotoWithId = file => {
+        uploadPhotoHandler(file, id)
+    }
 
     return (
         <>
@@ -16,7 +21,8 @@ const EventListItem = ({ title, description, onSelect }) => {
                     </div>
                     <div className="navigate-container">
                         <div className="navigate">
-                            <button onClick={onSelect}>select</button>
+                            <button onClick={onSelect}>View</button>
+                            <ImageUpload uploadPhotoHandler={uploadPhotoWithId} title="&#10003;"/>
                         </div>
                     </div>
                 </div>
