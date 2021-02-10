@@ -76,6 +76,10 @@ router.get("/hunts", huntsController.getAllHunts, (req, res) => {
   return res.status(200).json(res.locals.hunts);
 });
 
+//------POST-----
+router.post("/hunts/createHunt", huntsController.createHunt, (req, res) => {
+  return res.status(200).json('hunt created!');
+});
 
 //-----------------------------------EVENTS-------------------------------
 //-------GET-----

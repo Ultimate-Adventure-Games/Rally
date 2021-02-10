@@ -21,7 +21,7 @@ CREATE TABLE public.hunts (
     "hunt_name" varchar NOT NULL,
     "hunt_des" varchar NOT NULL,
     "hunt_votes" int, 
-    "hunt_splash" varchar,
+    "hunt_banner" varchar,
     "hunt_lat" varchar,
     "hunt_long" varchar,
     "user_id" int,
@@ -73,7 +73,7 @@ ALTER TABLE public.subs ADD CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCE
 ALTER TABLE public.subs ADD CONSTRAINT fk_hunt FOREIGN KEY ("hunt_id") REFERENCES public.hunts("hunt_id");
 
 INSERT INTO public.users (user_name, password) VALUES ('bill', 'nye');
-INSERT INTO public.hunts (hunt_name, hunt_des, hunt_votes, hunt_splash, hunt_lat, hunt_long, user_id) VALUES ('SF Bar Crawl', 'Whacky barcrawl around SF!', 0, '', '37.7975° N', '122.4065° W', 1);
+INSERT INTO public.hunts (hunt_name, hunt_des, hunt_votes, hunt_banner, hunt_lat, hunt_long, user_id) VALUES ('SF Bar Crawl', 'Whacky barcrawl around SF!', 0, '', '37.7975° N', '122.4065° W', 1);
 INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Vesuvio Cafe', 1, '37.7975° N', '122.4065° W', 'Have a drink at the bar', 1 );
 INSERT INTO public.events (event_name, event_index, event_lat, event_long, event_riddle, hunt_id) VALUES ('Devils Acre', 1, '37.7977° N', '122.4062° W', 'Have a drink at the bar', 1 );
 
