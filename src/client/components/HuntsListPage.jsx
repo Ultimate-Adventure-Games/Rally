@@ -33,15 +33,16 @@ const HuntsListPage = props => {
     //   userLng,
     // }
 
-    // useEffect(() => {
-    //   // TODO confirm endpoint
-    //   axios(`http://localhost:3000/getAllHunts/`)
-    //   // TODO determine if the data is already sorted by votes -- if not, sort 
-    //     .then(res => setHunts(res.data))
-    //     .catch(err => console.log('GET Error retrieving all hunts in the area'))
+    useEffect(() => {
+      // TODO confirm endpoint
+      axios(`http://localhost:3000/api/hunts`)
+      // TODO determine if the data is already sorted by votes -- if not, sort
+      .then(res => console.log(res.data)) 
+        // .then(res => setHunts(res.data))
+        .catch(err => console.log('GET Error retrieving all hunts in the area'))
 
       
-    // })
+    })
 
 // DUMMY OBJECT
     const huntsTest = [
