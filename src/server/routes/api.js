@@ -76,6 +76,10 @@ router.get("/hunts", huntsController.getAllHunts, (req, res) => {
   return res.status(200).json(res.locals.hunts);
 });
 
+//------POST-----
+router.post("/hunts/createHunt", huntsController.createHunt, (req, res) => {
+  return res.status(200).json('hunt created!');
+});
 
 //-----------------------------------EVENTS-------------------------------
 //-------GET-----
@@ -85,14 +89,14 @@ router.get("/events/:event_id", eventsController.getEventByEventId, (req, res) =
 })
 
 //get all events by hunt, set hunt_id
-router.get("/events/hunt/:hunt_id", eventsController.getEvents, (req, res) => {
+router.get("/events/getEventsByHunt/:hunt_id", eventsController.getEvents, (req, res) => {
   return res.status(200).json(res.locals.events)
 })
 
 
 //------POST-----
 //create event, set event_name event_index event_lat event_long event_riddle hunt_id
-router.post("/events", eventsController.createEvent, (req, res) => {
+router.post("/events/createEvent", eventsController.createEvent, (req, res) => {
   return res.status(200).send("successfully created event");
 });
 
@@ -100,7 +104,7 @@ router.post("/events", eventsController.createEvent, (req, res) => {
 //-----------------------------------PHOTOS-------------------------------
 //-------GET-----
 //get photos by event, set event_id
-router.get("/photos/:event_id", photosController.getPhotosByEvent, (req, res) => {
+router.get("/photos/getPhotos/:event_id", photosController.getPhotosByEvent, (req, res) => {
     return res.status(200).json(res.locals.photos)
 })
 
