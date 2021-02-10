@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
  * @callback props.uploadPhotoHandler First argument will be FormData <https://developer.mozilla.org/en-US/docs/Web/API/FormData> with files
  */
 
-const ImageUpload = ({ uploadPhotoHandler }) => {
+const ImageUpload = ({ uploadPhotoHandler, title }) => {
 
     const inputFile = useRef(null);
     const onFileSelection = (event) => {
@@ -20,7 +20,7 @@ const ImageUpload = ({ uploadPhotoHandler }) => {
     return (
         <>
             <input style={{ 'display': 'none' }} type="file" ref={inputFile} onChange={onFileSelection} />
-            <button onClick={onClickUpload}>Photo</button>
+            <button onClick={onClickUpload}>{title}</button>
         </>
     )
 }

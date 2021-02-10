@@ -21,8 +21,8 @@ const EventListItem = ({ title, description, onSelect, uploadPhotoHandler, id })
                     </div>
                     <div className="navigate-container">
                         <div className="navigate">
-                            {/* <button onClick={onSelect}>select</button> */}
-                            <ImageUpload uploadPhotoHandler={uploadPhotoWithId}/>
+                            <button onClick={onSelect}>View</button>
+                            <ImageUpload uploadPhotoHandler={uploadPhotoWithId} title="&#10003;"/>
                         </div>
                     </div>
                 </div>
