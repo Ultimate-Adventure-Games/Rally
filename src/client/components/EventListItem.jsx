@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ImageUpload from './ImageUpload';
 
+import { AppContext } from './ContextProvider';
+
 const EventListItem = ({ title, description, onSelect, uploadPhotoHandler, id }) => {
-    const uploadPhotoWithId = file => { uploadPhotoHandler(file, id) }
+    const { user } = useContext(AppContext);
 
     
 const uploadImage = e => {
@@ -14,7 +16,7 @@ const uploadImage = e => {
       formData.append(i, file)
     })
   
-    fetch(`http://localhost:3000/api/photos/image-upload/` + id, {
+    fetch(`http://localhost:3000/api/photos/image-upload/` + id + '/' + user.user_id, {
       method: 'POST',
       body: formData
     })
