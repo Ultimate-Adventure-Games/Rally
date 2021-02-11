@@ -15,10 +15,10 @@ const HuntsListPage = props => {
     } = useContext(AppContext);
 
     let history = useHistory()
+    const [votes, setVotes] = useState(0)
 
     useEffect(() => {
       axios(`http://localhost:3000/api/hunts`)
-      // TODO determine if the data is already sorted by votes -- if not, sort 
         .then(res => {
           
           setHunts(res.data.map(hunt => {
@@ -33,6 +33,12 @@ const HuntsListPage = props => {
         })
         .catch(err => console.log('GET Error retrieving all hunts in the area'))
     }, [])
+
+    
+
+    
+
+    
 
     
     const { isLoaded } = useJsApiLoader({
@@ -187,7 +193,9 @@ const HuntsListPage = props => {
           }
         <div className='list-item-section'>{huntList}</div>
         <Link 
-        to="/createhunt"
+        to={{
+          pathname: "/createhunt",
+        }}
         className="btn btn-primary mr-2"
         type="button"
         >Create Hunt</Link>
