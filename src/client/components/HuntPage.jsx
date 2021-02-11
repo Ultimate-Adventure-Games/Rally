@@ -143,6 +143,7 @@ const HuntPage = (props) => {
                     events.map(event => <EventListItem key={event.event_id} id={event.event_id} title={event.event_name} uploadPhotoHandler={uploadPhotoHandler} description={event.event_riddle} onSelect={onSelectEventHandler.bind(this, event.event_id)} />)
                 }
             </div>
+            <Link to="/createevent">Create Event</Link>
         </>
     )
 }

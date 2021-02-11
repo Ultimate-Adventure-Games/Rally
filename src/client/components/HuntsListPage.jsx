@@ -1,6 +1,7 @@
 import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import React, { useContext, useEffect, useState, useCallback } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { AppContext } from './ContextProvider';
 import HuntListItem from './HuntListItem';
 
@@ -42,7 +43,7 @@ const HuntsListPage = props => {
           setHunts(res.data.map(hunt => {
             return  {
               ...hunt,
-              event_pos: {
+              hunt_pos: {
                 lat: hunt.hunt_lat,
                 lng: hunt.hunt_long,
               }
@@ -154,9 +155,7 @@ const HuntsListPage = props => {
                     {
                         hunts.map(hunt => {
                           return (
-                            <div>
-                          <Marker position={hunt.pos}/>
-                          </div>
+                          <Marker position={hunt.hunt_pos}/>
                           )
                         })
                           
@@ -167,6 +166,7 @@ const HuntsListPage = props => {
                 : <p>loading map...</p>
           }
         <div className='list-item-section'>{huntList}</div>
+        <Link to="/createhunt">Create Hunt</Link>
       </div>
     );
 
