@@ -63,9 +63,9 @@ class App extends Component {
 
   this.state = {
     user: {},
-    // FIXME hardcoded for now (Alcatraz, SF)
-    userLat: 37.8270,
-    userLng: -122.4230,
+    // default location set to Austin, TX
+    userLat: 30.2672,
+    userLng: -97.7431,
     hunts: [],
     potentialHunts: [],
     runningHunts: [],
