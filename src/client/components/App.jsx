@@ -30,6 +30,12 @@ class App extends Component {
     }))
   }
 
+  this.setEvents = events => {
+    this.setState(state => ({
+      events: events,
+    }))
+  }
+
   this.setPotentialHunts = potentialHunts => {
     this.setState(state => ({
       potentialHuntList: potentialHunts,
@@ -70,6 +76,8 @@ class App extends Component {
     potentialHunts: [],
     runningHunts: [],
     completedHunts: [],
+    events: [],
+    setEvents: this.setEvents,
     setCurrentUser: this.setCurrentUser,
     setHunts: this.setHunts,
     setPotentialHunts: this.setPotentialHunts,
@@ -89,7 +97,7 @@ class App extends Component {
             <Route path="/signup" component={Signup} />
             <Route path="/hunt/:id" component={HuntPage} />
             <Route path="/createhunt" component={CreateHunt} />
-            <Route path="/createevent" component={CreateEvent} />
+            <Route path="/createevent/:id" component={CreateEvent} />
             <Route path="/" component={Login} />
           </Switch>
         </AppContext.Provider>
