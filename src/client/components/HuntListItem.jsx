@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from './ContextProvider';
@@ -5,9 +6,8 @@ import { AppContext } from './ContextProvider';
 
 
 // TODO could linkTo just be based on key (aka hunt_id)
-const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler, pos, pplGoing }) => {
+const HuntListItem = ({huntId, huntName, voteCount, linkTo, handleHuntItemClick, pos }) => {
 
-  // deconstruct completedHunts, runningHunts, potentialHunts
   const {
     potentialHunts,
     runningHunts,
@@ -17,12 +17,15 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
     setCompletedHunts,
   } = useContext(AppContext);
     
-    const [potential, setPotential] = useState(potentialHunts)
-    const [running, setRunning] = useState(runningHunts)
-    const [completed, setCompleted] = useState(completedHunts)
+  const [votes, setVotes] = useState(voteCount)
+  const [potential, setPotential] = useState(potentialHunts)
+  const [userVoted, setUserVoted] = useState(false);
+  const [userHuntStatus, setUserHuntStatus] = useState(0);
+  const [running, setRunning] = useState(runningHunts)
+  const [completed, setCompleted] = useState(completedHunts)
+  
       
-    // default to 0 
-    const [userHuntStatus, setUserHuntStatus] = useState(0);
+  
     
     // conditional check and update state 
     /**
@@ -41,23 +44,18 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
       else setUserHuntStatus(0)
     }, [])
       
-    const [votes, setVotes] = useState(voteCount)
     
     
-    // TODO best way to figure out if user already voted? 
-    const [userVoted, setUserVoted] = useState(false);
 
 
     
-
-    // useEffect(() => {
-    //   // if votes or userHuntStatus changes -- submit PUT request to update db entry
-    // }, [votes, userHuntStatus])
 
     
     const signupHandler = () => {
       // update status state hook in order to conditionally render the appropriate button
       setUserHuntStatus(1)
+      // request includes user_id and hunt_id
+      // TODO POST request 
       // update array of potentialHunts (hunts user signed up for) in local state first 
       setPotential([...potential, huntId])
       // replace array in context with the updated array from local state
@@ -86,8 +84,15 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
       
       // TODO conditionally render signup button based on status 
       const signupButton = () => {
-        if (!userHuntStatus) return <button onClick={signupHandler}>Sign Up!</button>;
-        if (userHuntStatus === 1) return <button>See You There!</button>;
+        if (!userHuntStatus) return <button 
+        onClick={signupHandler}
+        className="btn btn-primary mr-3"
+        type="button"
+        >Sign Up!</button>;
+        if (userHuntStatus === 1) return <button
+        className="btn btn-success mr-3"
+        type="button"
+        >See You There!</button>;
         if (userHuntStatus === 2) return <button>In Progress!</button>;
         if (userHuntStatus === 3) return <button>Completed!</button>;
       }
@@ -95,7 +100,7 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
     // TODO include number of people signed up for hunt ?
     return (
         <>
-          <div onClick={(e) => huntItemClickHandler(pos, huntName)} className="list-item-container">
+          <div onClick={(e) => handleHuntItemClick(pos, huntName)} className="list-item-container">
             <div className="listItem">
                 <div className="text-container">
                     <div className="title">
@@ -121,6 +126,8 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
                         pathname: linkTo,
                         state: { huntName: huntName }
                         }}
+                        className="btn btn-info mr-3"
+                        type="button"
                         >
                         select</Link>
                     </div>

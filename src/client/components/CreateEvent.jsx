@@ -1,72 +1,131 @@
-import React, { useState, Fragment } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, Fragment, useEffect } from "react";
+import { Link, useLocation } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
+import { AppContext } from './ContextProvider';
 import axios from 'axios';
+import PlacesAutocomplete from "react-places-autocomplete";
 
-const CreateEvent = () => {
+
+import {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete';
+import LocationSearchInput from "./LocationSearchInput";
+
+
+
+const CreateEvent = (props) => {
+  /**
+   * object with input field values held in local state
+   */
   const [inputFields, setInputFields] = useState([
     { eventName: "", eventLat: "", eventLon: "", eventRiddle: "" },
   ]);
 
+  const location = useLocation();
+  const { id } = location.state;
+  
+  useEffect(() => {
+    console.log('ID', location.state)
+  }, [])
+  
+  
+  /**
+   * handler to add an additional set of fields
+   */
   const handleAddFields = () => {
     const values = [...inputFields];
     values.push({ eventName: "", eventLat: "", eventLon: "", eventRiddle: "" });
     setInputFields(values);
   };
 
+  /**
+   * handler to remove most recently added fields
+   */
   const handleRemoveFields = (index) => {
     const values = [...inputFields];
     values.splice(index, 1);
     setInputFields(values);
   };
 
+  /**
+   * handler for monitoring input change and updating local state value 
+   * NOTE that location data (lat, lng) is handled at the @LocationSearchInput child component level
+   */
   const handleInputChange = (index, event) => {
     const values = [...inputFields];
-    if (event.target.name === "eventName") {
-      values[index].eventName = event.target.value;
-    } else if (event.target.name === "eventLat") {
-      values[index].eventLat = event.target.value;
-    } else if (event.target.name === "eventLon") {
-      values[index].eventLon = event.target.value;
-    } else {
-      values[index].eventRiddle = event.target.value;
-    }
-
+    if (event.target.name === "eventName") values[index].eventName = event.target.value;
+    else values[index].eventRiddle = event.target.value;
     setInputFields(values);
   };
 
+  /**
+   * @handleSelect is passed down to @LocationSearchInput via props 
+   * upon selecting an autocomplete option from the location field, 
+   * the @lat / @lng values are deconstructed and stored in local state
+   */
+  const [newLat, setNewLat] = useState('')
+  const [newLng, setNewLng] = useState('')
+
+  
+  /**
+   * Upon making a selection, @address is parsed for the @lat / @lng values, which are stored in local state
+   */
+  const handleSelect = address => {
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(({lat, lng}) => {
+        setNewLat(lat)
+        setNewLng(lng)
+      })
+      .catch(error => console.error('Error', error));
+  };
+  
+  
+  /**
+   * form submit handler creates an object with relevant properties stored in local state
+   * and updates database
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const data = {
-      // const params = [req.body.event_name, req.body.event_index, req.body.event_lat, req.body.event_long, req.body.event_riddle, req.body.hunt_id];
       event_name: inputFields[0]["eventName"],
       event_riddle: inputFields[0]["eventRiddle"],
-      event_lat: inputFields[0]["eventLat"],
-      event_long: inputFields[0]["eventLon"],
-      hunt_id: 1,
-      event_index: 3
+      event_lat: newLat,
+      event_long: newLng,
+      hunt_id: id,
+      event_index: events.length
     }
+    console.log(data)
 
-    console.log(data);
-
+    /**
+     * Upon successful update, user is redirected back to the huntPage to which the event belongs
+     */
     axios.post('http://localhost:3000/api/events/createEvent', data)
     .then(res => {
       if (res.status === 200) {
-        alert("Event successfully created. Return to Hunts List Page!")
-        props.history.push('/')
+        alert("Event successfully created!")
+        props.history.push(`/hunt/${id}`)
       } else {
         alert("Error creating Event");
       }
     })
   };
 
+  
   return (
     <>
-      <Link to='/hunts'>Back to Hunts</Link>
-      <h1>Create Hunt!</h1>
+      <Link 
+      className="btn btn-primary mr-2"
+      type="button"
+      to={`/hunt/${id}`}
+      
+      // TODO NOTE: currentHunt is stored in localStorage to ensure persistence 
+      >{`Back to ${window.localStorage.currentHunt}`}</Link>
+      <h1>Create an Event!</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-row">
+        <div className="form-col">
           {inputFields.map((inputField, index) => (
             <Fragment key={`${inputField}~${index}`}>
               <div className="form-group col-sm-6">
@@ -80,28 +139,8 @@ const CreateEvent = () => {
                   onChange={(event) => handleInputChange(index, event)}
                 />
               </div>
-              <div className="form-group col-sm-4">
-                <label htmlFor="eventLat">Event Latitude</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="eventLat"
-                  name="eventLat"
-                  value={inputField.eventLat}
-                  onChange={(event) => handleInputChange(index, event)}
-                />
-              </div>
-              <div className="form-group col-sm-4">
-                <label htmlFor="eventLon">Event Longitude</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="eventLon"
-                  name="eventLon"
-                  value={inputField.eventLon}
-                  onChange={(event) => handleInputChange(index, event)}
-                />
-              </div>
+              <label htmlFor="eventLocation" className="newLocationLabel">Event Location</label>
+              <LocationSearchInput handleSelect={handleSelect}/>
               <div className="form-group col-sm-4">
                 <label htmlFor="eventRiddle">Event Riddle</label>
                 <input
@@ -142,7 +181,6 @@ const CreateEvent = () => {
           </button>
         </div>
         <br />
-        {/* <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
       </form>
     </>
   );

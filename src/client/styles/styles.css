@@ -83,7 +83,13 @@ body {
   justify-content: center;
 }
 
-.pplGoing {
-  margin-bottom: 5px;
+.newLocationLabel {
+  margin-left: 15px;
+}
+
+.photo-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
 }
 
