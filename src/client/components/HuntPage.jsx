@@ -4,25 +4,26 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 import EventListItem from './EventListItem';
 import axios from 'axios';
 import { AppContext } from './ContextProvider';
+import PhotoInfoWindow from './PhotoInfoWindow';
 
 const HuntPage = (props) => {
     const { id } = useParams();
 
     const {
-      hunts
+        hunts
     } = useContext(AppContext)
 
     const [currentHunt, setCurrentHunt] = useState('');
 
     useEffect(() => {
-      for (const hunt of hunts) {
-        console.log(id, hunt.hunt_id);
-        if (hunt.hunt_id == id) {
-          console.log('EQUALS')
-          setCurrentHunt(hunt.hunt_name)
-          break
+        for (const hunt of hunts) {
+            console.log(id, hunt.hunt_id);
+            if (hunt.hunt_id == id) {
+                console.log('EQUALS')
+                setCurrentHunt(hunt.hunt_name)
+                break
+            }
         }
-      }
     }, [])
 
     const { isLoaded } = useJsApiLoader({
@@ -38,24 +39,22 @@ const HuntPage = (props) => {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
-      axios(`http://localhost:3000/api/events/getEventsByHunt/${id}`)
-        .then(res => {
-          
-          setEvents(res.data.map(event => {
-            return  {
-              ...event,
-              event_pos: {
-                lat: event.event_lat,
-                lng: event.event_long,
-              }
-            }
-          }))
-        })
-        .catch(err => console.log('GET Error retrieving all hunts in the area'))
+        axios(`http://localhost:3000/api/events/getEventsByHunt/${id}`)
+            .then(res => {
+
+                setEvents(res.data.map(event => {
+                    return {
+                        ...event,
+                        event_pos: {
+                            lat: event.event_lat,
+                            lng: event.event_long,
+                        }
+                    }
+                }))
+            })
+            .catch(err => console.log('GET Error retrieving all hunts in the area'))
     }, [])
-    
-    
-    
+
     const onMapLoad = useCallback(map => {
         setMap(map);
     }, []);
@@ -72,52 +71,40 @@ const HuntPage = (props) => {
         map.setCenter({ lat, lng })
     };
 
-    const uploadPhotoHandler = (file, id) => {
+    const uploadPhotoHandler = async (file, id) => {
         const { event_pos, event_name, event_riddle } = events.find(event => event.event_id === id);
-        const { lat, lng } = pos;
-        setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{event_name}</h3><div>{event_riddle}</div><div><img style={{ width: '50%', height: '50%' }} src={URL.createObjectURL(file)} /></div></></InfoWindow>)
+        const { lat, lng } = event_pos;
+
+        // Placeholder code to simulate upload photo asynchronously
+        await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve()
+            }, 1000)
+        })
+
+        // Request all Photo urls for this event from API
+        const urls = await requestPhotos(id);
+        // TODO Once, the above line actually returns URLs, replace the prop value photoUrls with the urls array...
+        setSelectedEvent(<PhotoInfoWindow onCloseClick={() => { setSelectedEvent(null) }} lat={lat} lng={lng} title={event_name} description={event_riddle} photoUrls={[URL.createObjectURL(file), URL.createObjectURL(file), URL.createObjectURL(file)]}/>)
+    }
+
+    const requestPhotos = (eventId) => {
+        // Placeholder code to simulate requesting photos asynchronously
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([ /*STUB HOSTED IMAGE URLS*/]);
+            }, 2000);
+        })
     }
 
     /*
-     * Begin Stub Data
+     * Placeholder Center...
+     * TODO Calculate the center of the map dynamically based on all pins...
      */
     const center = {
         lat: 30.2674331,
         lng: -97.7419488
     }
-    
-    //#region  
-    // const events = [{
-    //     id: 0,
-    //     title: 'Shakespeare Bar',
-    //     description: '$7 pitchers and that weird Austin vibe. Take a picture with the ice cream truck.',
-    //     pos: {
-    //         lat: 30.2674331,
-    //         lng: -97.7419488
-    //     }
-    // },
-    // {
-    //     id: 1,
-    //     title: 'The Jackalope',
-    //     description: 'Take a picture with the DJ.',
-    //     pos: {
-    //         lat: 30.2671304,
-    //         lng: -97.7411892
-    //     }
-    // },
-    // {
-    //     id: 2,
-    //     title: 'YETI Austin Flagship',
-    //     description: 'Didn\'t know the cooler brand had a bar? Cross the river to see it. Take a picture with the yeti.',
-    //     pos: {
-    //         lat: 30.2593641,
-    //         lng: -97.7485306,
-    //     }
-    // }]
-    /*
-     * End Stub Data
-     */
-    //#endregion 
 
     return (
         console.log('CURRENT HUNT', currentHunt),

@@ -87,3 +87,9 @@ body {
   margin-bottom: 5px;
 }
 
+.photo-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 100px;
+}
+
