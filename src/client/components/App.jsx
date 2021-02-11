@@ -5,6 +5,7 @@ import HuntPage from "./HuntPage";
 import HuntsListPage from "./HuntsListPage";
 import Signup from "./Signup";
 import CreateHunt from "./CreateHunt";
+import CreateEvent from "./CreateEvent";
 import { AppContext } from './ContextProvider';
 import Login from './Login'
 import '../styles/styles.css'
@@ -84,6 +85,7 @@ class App extends Component {
             <Route path="/signup" component={Signup} />
             <Route path="/hunt/:id" component={HuntPage} />
             <Route path="/createhunt" component={CreateHunt} />
+            <Route path="/createevent" component={CreateEvent} />
             <Route path="/" component={Login} />
           </Switch>
         </AppContext.Provider>
