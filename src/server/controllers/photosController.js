@@ -1,11 +1,19 @@
 const db = require("../models/model.js");
+const cloudinary = require('cloudinary')
+
+cloudinary.config({ 
+  cloud_name: 'dcejpbeye', 
+  api_key: 763621167689129,
+  api_secret: 'y9Db1xKuzCmE0u3OBiIPuVr3pxY'
+})
 
 const photosController = {};
 
 //create
 // createPhoto(user_id, event_id)
 photosController.createPhoto = (req, res, next) => {
-  const params = [req.body.user_id, req.body.event_id, req.body.photo_src];
+  // const params = [req.body.user_id, req.body.event_id, req.body.photo_src];
+  const params = [1, req.params.event_id, res.locals.photo_src]
   const queryText =
     "INSERT INTO public.photos (user_id, event_id, photo_src) VALUES ($1, $2, $3);";
 
@@ -40,5 +48,19 @@ photosController.getPhotoByUserAndEvent = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+// upload photos to cloudinary
+photosController.uploadPhoto = (req, res, next) => {
+  
+  const values = Object.values(req.files)
+  const promises = values.map(image => cloudinary.uploader.upload(image.path))
+  
+  Promise
+    .all(promises)
+    .then(results => {
+      res.locals.photo_src = results[0].url
+      return next()
+    })
+}
 
 module.exports = photosController;
