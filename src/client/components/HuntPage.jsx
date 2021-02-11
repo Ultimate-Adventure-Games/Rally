@@ -12,6 +12,7 @@ const HuntPage = (props) => {
     const [map, setMap] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const location = useLocation(); //to add user location
+    const center = { lat: 30.2674331, lng: -97.7419488 } //stub data
 
     useEffect(() => {
       for (const hunt of hunts) {
@@ -23,11 +24,6 @@ const HuntPage = (props) => {
         }
       }
     }, [])
-
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: process.env.API_KEY
-    });
     
     useEffect(() => {
       axios(`http://localhost:3000/api/events/getEventsByHunt/${id}`)
@@ -45,8 +41,11 @@ const HuntPage = (props) => {
         })
         .catch(err => console.log('GET Error retrieving all hunts in the area'))
     }, [])
-    
-    
+
+    const { isLoaded } = useJsApiLoader({
+      id: 'google-map-script',
+      googleMapsApiKey: process.env.API_KEY
+    });
     
     const onMapLoad = useCallback(map => {
         setMap(map);
@@ -69,53 +68,10 @@ const HuntPage = (props) => {
         const { lat, lng } = pos;
         setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{event_name}</h3><div>{event_riddle}</div><div><img style={{ width: '50%', height: '50%' }} src={URL.createObjectURL(file)} /></div></></InfoWindow>)
     }
-
-    /*
-     * Begin Stub Data
-     */
-    const center = {
-        lat: 30.2674331,
-        lng: -97.7419488
-    }
     
-    //#region  
-    // const events = [{
-    //     id: 0,
-    //     title: 'Shakespeare Bar',
-    //     description: '$7 pitchers and that weird Austin vibe. Take a picture with the ice cream truck.',
-    //     pos: {
-    //         lat: 30.2674331,
-    //         lng: -97.7419488
-    //     }
-    // },
-    // {
-    //     id: 1,
-    //     title: 'The Jackalope',
-    //     description: 'Take a picture with the DJ.',
-    //     pos: {
-    //         lat: 30.2671304,
-    //         lng: -97.7411892
-    //     }
-    // },
-    // {
-    //     id: 2,
-    //     title: 'YETI Austin Flagship',
-    //     description: 'Didn\'t know the cooler brand had a bar? Cross the river to see it. Take a picture with the yeti.',
-    //     pos: {
-    //         lat: 30.2593641,
-    //         lng: -97.7485306,
-    //     }
-    // }]
-    /*
-     * End Stub Data
-     */
-    //#endregion 
-
     return (
-        console.log('CURRENT HUNT', currentHunt),
         <>
             <Link to='/hunts'>back to Hunts</Link>
-            {/* <h1>{location.state.huntName}</h1> */}
             <h1>{currentHunt}</h1>
             {
                 isLoaded ?

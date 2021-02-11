@@ -5,9 +5,8 @@ import { AppContext } from './ContextProvider';
 
 
 // TODO could linkTo just be based on key (aka hunt_id)
-const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler, pos, pplGoing }) => {
+const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler, pos}) => {
 
-  // deconstruct completedHunts, runningHunts, potentialHunts
   const {
     potentialHunts,
     runningHunts,
@@ -17,12 +16,15 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
     setCompletedHunts,
   } = useContext(AppContext);
     
-    const [potential, setPotential] = useState(potentialHunts)
-    const [running, setRunning] = useState(runningHunts)
-    const [completed, setCompleted] = useState(completedHunts)
+  const [votes, setVotes] = useState(voteCount)
+  const [potential, setPotential] = useState(potentialHunts)
+  const [userVoted, setUserVoted] = useState(false);
+  const [userHuntStatus, setUserHuntStatus] = useState(0);
+  const [running, setRunning] = useState(runningHunts)
+  const [completed, setCompleted] = useState(completedHunts)
+  
       
-    // default to 0 
-    const [userHuntStatus, setUserHuntStatus] = useState(0);
+  
     
     // conditional check and update state 
     /**
@@ -41,15 +43,6 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
       else setUserHuntStatus(0)
     }, [])
       
-    const [votes, setVotes] = useState(voteCount)
-    
-    
-    // TODO best way to figure out if user already voted? 
-    const [userVoted, setUserVoted] = useState(false);
-
-
-    
-
     // useEffect(() => {
     //   // if votes or userHuntStatus changes -- submit PUT request to update db entry
     // }, [votes, userHuntStatus])
