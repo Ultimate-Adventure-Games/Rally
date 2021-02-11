@@ -14,14 +14,17 @@ const HuntPage = (props) => {
 
     const [currentHunt, setCurrentHunt] = useState('');
 
+    /**
+     * Iterate through array of hunts, until finding the one that matches the 
+     * @id param 
+     * @hunt_name is stored in @localStorage to ensure persistence
+     * */
     useEffect(() => {
       for (const hunt of hunts) {
-        console.log(id, hunt.hunt_id);
+        console.log(hunt);
         if (hunt.hunt_id == id) {
-          console.log('EQUALS')
-          // setCurrentHunt(hunt.hunt_name)
-          window.localStorage.currentHunt = hunt.hunt_name
-          break
+          window.localStorage.currentHunt = hunt.hunt_name;
+          break;
         }
       }
     }, [])
@@ -31,13 +34,17 @@ const HuntPage = (props) => {
         googleMapsApiKey: process.env.API_KEY
 
     });
-    const location = useLocation();
 
     const [map, setMap] = useState(null);
+    
+    /**
+     * map related variables stored in local state to allow for more maneuvaribility
+     */
     const [center, setCenter] = useState({
       lat: 30.2674331,
       lng: -97.7419488
     })
+    const [zoom, setZoom] = useState(15);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [events, setEvents] = useState([]);
     
@@ -45,7 +52,13 @@ const HuntPage = (props) => {
     const [eventPath, setEventPath] = useState([])
 
     /**
-     * GET request to API to retrieve all event objects within selected hunt 
+     * FIRST GET request to API to retrieve all event objects within selected hunt 
+     *  each object is updated with an @event_pos property, which is also stored in 
+     * an array (@evenPath ) in local state for purposes of rendering the Polyline between
+     * event locations.
+     * 
+     * SECOND GET request is made if @eventArr is empty, and updates the @center local state variable 
+     * to the location inputted in the New Hunt form, in order to enable map focus on that area
      */
     useEffect(() => {
       axios(`http://localhost:3000/api/events/getEventsByHunt/${id}`)
@@ -63,7 +76,20 @@ const HuntPage = (props) => {
               }
           })
           setEvents(eventArr);
+          return eventArr;
         })
+        .then(eventArr => eventArr.length === 0 ? 
+          axios(`http://localhost:3000/api/hunts/${id}`)
+          .then(res => { 
+            const pos = {
+              lat: res.data[0].hunt_lat,
+              lng: res.data[0].hunt_long
+            }
+            // console.log(pos)
+            setCenter(pos)
+          })
+          .catch(err => console.log('GET Error retrieving hunt location'))
+         : eventArr)
         .catch(err => console.log('GET Error retrieving all hunts in the area'))
     }, [])
     
@@ -73,29 +99,27 @@ const HuntPage = (props) => {
       const bounds = new google.maps.LatLngBounds();
       events.map(event => {
         // size bounds accordingly 
-        console.log(event.event_pos)
+        console.log('EVENT', event, center)
         bounds.extend(event.event_pos);
         return event.event_id;
       })
       // auto-zoom
       map.fitBounds(bounds);
-      // FIXME do we also need map.panToBounds?
-      // map.panToBounds(bounds);
     }
     
     
     
     const onMapLoad = useCallback(map => {
-      console.log(events)
       // Store a reference to the google map instance in state
       setMap(map);
-      // Fit map bounds to contain all markers
-      
     },[]);
 
     useEffect(() => {
-      console.log(events)
-      if (events.length > 0) fitBounds(map);
+      // Fit map bounds to contain all markers
+      if (events.length > 0) {
+        fitBounds(map);
+        setZoom((zoom) => Math.max(zoom, 15));
+      }
     }, [events])
     
 
@@ -123,7 +147,8 @@ const HuntPage = (props) => {
      */
     
 
-    const pathOptions = {
+    /* Format options for the Polyline path */
+     const pathOptions = {
       strokeColor: '#DC7633',
       strokeOpacity: 0.8,
       strokeWeight: 3,
@@ -140,7 +165,7 @@ const HuntPage = (props) => {
         console.log('CURRENT HUNT', currentHunt),
         <>
             <Link to='/hunts'
-            className="btn btn-primary mr-2"
+                  className="btn btn-primary mr-2"
                   type="button"
             >Back to Hunts</Link>
             <h1>{window.localStorage.currentHunt}</h1>
@@ -149,7 +174,7 @@ const HuntPage = (props) => {
                 <GoogleMap 
                   center={center} 
                   // onCenterChanged ={() => setCenter(map.getCenter().toJSON())}
-                  zoom={15} 
+                  zoom={zoom} 
                   mapContainerStyle={{ height: '500px', width: '100%' }} 
                   onLoad={onMapLoad} 
                   onUnmount={onMapUnmount}>

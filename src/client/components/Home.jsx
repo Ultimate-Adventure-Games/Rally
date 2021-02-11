@@ -22,6 +22,8 @@ const Home = (props) => {
       userLng: -122.4230
     };
 
+    
+
     const onLoad = useCallback(map => {
         const bounds = new window.google.maps.LatLngBounds();
         map.fitBounds(bounds);

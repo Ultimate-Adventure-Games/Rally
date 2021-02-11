@@ -62,6 +62,7 @@ const CreateHunt = () => {
   const [newLat, setNewLat] = useState('')
   const [newLng, setNewLng] = useState('')
 
+  /* Upon making a selection, @address is parsed for the @lat / @lng values, which are stored in local state */ 
   const handleSelect = address => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
@@ -102,7 +103,11 @@ const CreateHunt = () => {
 
   return (
     <>
-      <Link to='/hunts'>Back to Hunts</Link>
+      <Link 
+      to='/hunts'
+      className="btn btn-primary mr-2"
+      type="button"
+      >Back to Hunts</Link>
       <h1>Create Hunt!</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-col">

@@ -6,6 +6,9 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import { AppContext } from './ContextProvider';
 
+  /**
+   * boilerplate component that holds the address input in local state, while parent component handles ultimate selection
+   */
   const LocationSearchInput = ({handleSelect}) => {
     
 

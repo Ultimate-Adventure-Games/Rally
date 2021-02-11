@@ -67,6 +67,10 @@ const CreateEvent = (props) => {
   const [newLat, setNewLat] = useState('')
   const [newLng, setNewLng] = useState('')
 
+  
+  /**
+   * Upon making a selection, @address is parsed for the @lat / @lng values, which are stored in local state
+   */
   const handleSelect = address => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
@@ -85,7 +89,6 @@ const CreateEvent = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      // const params = [req.body.event_name, req.body.event_index, req.body.event_lat, req.body.event_long, req.body.event_riddle, req.body.hunt_id];
       event_name: inputFields[0]["eventName"],
       event_riddle: inputFields[0]["eventRiddle"],
       event_lat: newLat,
@@ -95,6 +98,9 @@ const CreateEvent = (props) => {
     }
     console.log(data)
 
+    /**
+     * Upon successful update, user is redirected back to the huntPage to which the event belongs
+     */
     axios.post('http://localhost:3000/api/events/createEvent', data)
     .then(res => {
       if (res.status === 200) {
@@ -106,12 +112,15 @@ const CreateEvent = (props) => {
     })
   };
 
+  
   return (
     <>
       <Link 
       className="btn btn-primary mr-2"
       type="button"
       to={`/hunt/${id}`}
+      
+      // TODO NOTE: currentHunt is stored in localStorage to ensure persistence 
       >{`Back to ${window.localStorage.currentHunt}`}</Link>
       <h1>Create an Event!</h1>
       <form onSubmit={handleSubmit}>
@@ -171,7 +180,6 @@ const CreateEvent = (props) => {
           </button>
         </div>
         <br />
-        {/* <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
       </form>
     </>
   );
