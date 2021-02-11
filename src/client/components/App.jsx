@@ -24,7 +24,7 @@ class App extends Component {
 
   this.setHunts = hunts => {
     this.setState(state => ({
-      huntList: hunts,
+      hunts: hunts,
     }))
   }
 
@@ -64,7 +64,7 @@ class App extends Component {
     // FIXME hardcoded for now (Alcatraz, SF)
     userLat: 37.8270,
     userLng: -122.4230,
-    hunts: {},
+    hunts: [],
     potentialHunts: [],
     runningHunts: [],
     completedHunts: [],

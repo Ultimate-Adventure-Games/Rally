@@ -33,52 +33,53 @@ const HuntsListPage = props => {
     //   userLng,
     // }
 
-    // useEffect(() => {
-    //   // TODO confirm endpoint
-    //   axios(`http://localhost:3000/api/hunts`)
-    //   // TODO determine if the data is already sorted by votes -- if not, sort 
-    //     .then(res => {
+    useEffect(() => {
+      // TODO confirm endpoint
+      axios(`http://localhost:3000/api/hunts`)
+      // TODO determine if the data is already sorted by votes -- if not, sort 
+        .then(res => {
           
-    //       setHunts(res.data.map(hunt => {
-    //         return  {
-    //           ...hunt,
-    //           pos: {
-    //             lat: hunt.lat,
-    //             lng: hunt.lng,
-    //           }
-    //         }
-    //       }))
-    //     })
-    //     .catch(err => console.log('GET Error retrieving all hunts in the area'))
-    // }, [])
+          setHunts(res.data.map(hunt => {
+            console.log('API HUNT', hunt);
+            return  {
+              ...hunt,
+              pos: {
+                lat: hunt.hunt_lat,
+                lng: hunt.hunt_long,
+              }
+            }
+          }))
+        })
+        .catch(err => console.log('GET Error retrieving all hunts in the area'))
+    }, [])
 
 // DUMMY OBJECT
-    const huntsTest = [
-    {
-      hunt_id: 1,
-      hunt_name: 'Chris D Austin Ultimate',
-      hunt_votes: 65,
-      hunt_pplGoing: 12,
-      hunt_splash: '',
-      lat: 30.2674331,
-      lng: -97.7419488,
-      // FIXME is there a separate hunt row entry for every user? 
-      // user who made the hunt 
-      user_id: 1234,
-    },
-    {
-      hunt_id: 2,
-      hunt_name: 'South by Southwest',
-      hunt_votes: 50,
-      hunt_pplGoing: 7,
-      hunt_splash: '',
-      lat: 30.2674331,
-      lng: -97.7453488,
-      // FIXME is there a separate hunt row entry for every user? 
-      // user who made the hunt 
-      user_id: 1234,
-    },
-]
+//     const huntsTest = [
+//     {
+//       hunt_id: 1,
+//       hunt_name: 'Chris D Austin Ultimate',
+//       hunt_votes: 65,
+//       hunt_pplGoing: 12,
+//       hunt_splash: '',
+//       lat: 30.2674331,
+//       lng: -97.7419488,
+//       // FIXME is there a separate hunt row entry for every user? 
+//       // user who made the hunt 
+//       user_id: 1234,
+//     },
+//     {
+//       hunt_id: 2,
+//       hunt_name: 'South by Southwest',
+//       hunt_votes: 50,
+//       hunt_pplGoing: 7,
+//       hunt_splash: '',
+//       lat: 30.2674331,
+//       lng: -97.7453488,
+//       // FIXME is there a separate hunt row entry for every user? 
+//       // user who made the hunt 
+//       user_id: 1234,
+//     },
+// ]
     
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -120,13 +121,13 @@ const HuntsListPage = props => {
     }
 
 
-    
+
 
     // declare empty huntList array 
     const huntList = [];
     // loop and push to array a HuntListItem component 
     // TODO switch back to hunts Context array
-    huntsTest.forEach(huntObj => {
+    hunts.forEach(huntObj => {
       console.log(huntObj);
       huntList.push(
         <HuntListItem
@@ -135,12 +136,9 @@ const HuntsListPage = props => {
         huntId={huntObj.hunt_id}
         huntName={huntObj.hunt_name}
         voteCount={huntObj.hunt_votes}
-        pplGoing={huntObj.hunt_pplGoing}
+        // pplGoing={huntObj.hunt_pplGoing}
         // pos={huntObj.pos}
-        pos={{
-          lat: huntObj.lat,
-          lng: huntObj.lng
-        }}
+        pos={huntObj.pos}
         linkTo={'/hunt/' + huntObj.hunt_id}
         huntItemClickHandler={huntItemClickHandler}
         >
@@ -157,11 +155,15 @@ const HuntsListPage = props => {
                 <GoogleMap zoom={16} mapContainerStyle={{ height: '500px', width: '100%' }} center={center} onLoad={onMapLoad} onUnmount={onMapUnmount}>
                     {/* Load Markers */}
                     {
-                        huntsTest.map(hunt => (
-                          <div>
+                      console.log('ALL HUNTS', hunts),
+                        hunts.map(hunt => {
+                          console.log('HUNT RENDER', hunt);
+                          return (
+                            <div>
                           <Marker position={hunt.pos}/>
                           </div>
-                          ))
+                          )
+                        })
                           
                           
                     }
@@ -170,6 +172,7 @@ const HuntsListPage = props => {
                 : <p>loading map...</p>
           }
         <div className='list-item-section'>{huntList}</div>
+        <button onClick={() => console.log('HUNTS', hunts)}>HUNTS</button>
       </div>
     );
 
