@@ -34,46 +34,54 @@ const HuntsListPage = props => {
     //   userLng,
     // }
 
-    // useEffect(() => {
-    //   // TODO confirm endpoint
-    //   axios(`http://localhost:3000/getAllHunts/`)
-    //   // TODO determine if the data is already sorted by votes -- if not, sort 
-    //     .then(res => setHunts(res.data))
-    //     .catch(err => console.log('GET Error retrieving all hunts in the area'))
-
-      
-    // })
+    useEffect(() => {
+      // TODO confirm endpoint
+      axios(`http://localhost:3000/api/hunts`)
+      // TODO determine if the data is already sorted by votes -- if not, sort 
+        .then(res => {
+          
+          setHunts(res.data.map(hunt => {
+            console.log('API HUNT', hunt);
+            return  {
+              ...hunt,
+              pos: {
+                lat: hunt.hunt_lat,
+                lng: hunt.hunt_long,
+              }
+            }
+          }))
+        })
+        .catch(err => console.log('GET Error retrieving all hunts in the area'))
+    }, [])
 
 // DUMMY OBJECT
-    const huntsTest = [
-    {
-      hunt_id: 1,
-      hunt_name: 'Chris D Austin Ultimate',
-      hunt_votes: 65,
-      hunt_pplGoing: 12,
-      hunt_splash: '',
-      pos: {
-        lat: 30.2674331,
-        lng: -97.7419488
-      },
-      // FIXME is there a separate hunt row entry for every user? 
-      user_id: 1234,
-    },
-    {
-      hunt_id: 2,
-      hunt_name: 'South by Southwest',
-      hunt_votes: 50,
-      hunt_pplGoing: 7,
-      hunt_splash: '',
-      pos: {
-        lat: 30.2674331,
-        lng: -97.7453488
-      },
-      // FIXME is there a separate hunt row entry for every user? 
-      user_id: 1234,
-    },
-]
-
+//     const huntsTest = [
+//     {
+//       hunt_id: 1,
+//       hunt_name: 'Chris D Austin Ultimate',
+//       hunt_votes: 65,
+//       hunt_pplGoing: 12,
+//       hunt_splash: '',
+//       lat: 30.2674331,
+//       lng: -97.7419488,
+//       // FIXME is there a separate hunt row entry for every user? 
+//       // user who made the hunt 
+//       user_id: 1234,
+//     },
+//     {
+//       hunt_id: 2,
+//       hunt_name: 'South by Southwest',
+//       hunt_votes: 50,
+//       hunt_pplGoing: 7,
+//       hunt_splash: '',
+//       lat: 30.2674331,
+//       lng: -97.7453488,
+//       // FIXME is there a separate hunt row entry for every user? 
+//       // user who made the hunt 
+//       user_id: 1234,
+//     },
+// ]
+    
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.API_KEY
@@ -95,6 +103,23 @@ const HuntsListPage = props => {
     const onMapUnmount = useCallback(map => {
       setMap(null);
     }, [])
+    
+
+    const [infoWindow, setInfoWindow] = useState([]);
+    
+    const huntItemClickHandler = (pos, huntName) => {
+      console.log('position', pos);
+      return setInfoWindow(
+        // FIXME infoWindow doesn't open back up after being closed
+        <InfoWindow position={pos}>
+          <div className="huntMapInfo">
+            <h4 className="huntMapInfoName">{huntName}</h4>
+            {/* <div>{hunt.hunt_pplGoing} People Going!</div>
+            <div>{hunt.hunt_votes} Total Votes!</div> */}
+          </div> 
+        </InfoWindow>
+      );
+    }
 
 
 
@@ -103,37 +128,25 @@ const HuntsListPage = props => {
     const huntList = [];
     // loop and push to array a HuntListItem component 
     // TODO switch back to hunts Context array
-    huntsTest.forEach(huntObj => {
+    hunts.forEach(huntObj => {
+      console.log(huntObj);
       huntList.push(
         <HuntListItem
         className=""
         key={huntObj.hunt_id}
+        huntId={huntObj.hunt_id}
         huntName={huntObj.hunt_name}
         voteCount={huntObj.hunt_votes}
+        // pplGoing={huntObj.hunt_pplGoing}
+        // pos={huntObj.pos}
+        pos={huntObj.pos}
         linkTo={'/hunt/' + huntObj.hunt_id}
+        huntItemClickHandler={huntItemClickHandler}
         >
         </HuntListItem>
       )
     })
 
-
-    const MapIcon = hunt => (
-      // <>
-        <Marker position={hunt.pos}>
-          <InfoWindow 
-          visible={true}
-          >
-            <div className="huntMapInfo">
-              <div>{hunt.hunt_name}</div>
-              <div>{hunt.hunt_pplGoing} People Going!</div>
-              <div>{hunt.hunt_votes} Total Votes!</div>
-            </div> 
-          </InfoWindow>
-        </Marker>
-      // </>
-    )
-
-    
 
     return(
       <div className='huntListContainer'>
@@ -143,30 +156,25 @@ const HuntsListPage = props => {
                 <GoogleMap zoom={16} mapContainerStyle={{ height: '500px', width: '100%' }} center={center} onLoad={onMapLoad} onUnmount={onMapUnmount}>
                     {/* Load Markers */}
                     {
-                        huntsTest.map(hunt => (
-                          <div>
-                          <Marker position={hunt.pos}>
-                            <InfoWindow 
-                            visible={true}
-                            >
-                              <div className="huntMapInfo">
-                                <h4 className="huntMapInfoName">{hunt.hunt_name}</h4>
-                                <div>{hunt.hunt_pplGoing} People Going!</div>
-                                <div>{hunt.hunt_votes} Total Votes!</div>
-                              </div> 
-                            </InfoWindow>
-                          </Marker>
+                      console.log('ALL HUNTS', hunts),
+                        hunts.map(hunt => {
+                          console.log('HUNT RENDER', hunt);
+                          return (
+                            <div>
+                          <Marker position={hunt.pos}/>
                           </div>
-                          ))
+                          )
+                        })
                           
                           
                     }
-                    
+                  {infoWindow}
                 </GoogleMap>
                 : <p>loading map...</p>
           }
         <div className='list-item-section'>{huntList}</div>
         <Link to="/createhunt">Create Hunt</Link>
+        <button onClick={() => console.log('HUNTS', hunts)}>HUNTS</button>
       </div>
     );
 

@@ -13,8 +13,6 @@ router.get("/users/:user_id", usersController.getUser, (req, res) => {
     return res.status(200).json(res.locals.user)
 })
 
-
-
 //------POST-----
 //post route for create user, set body.username, password, 
 router.post("/users", usersController.createUser, (req, res) => {
