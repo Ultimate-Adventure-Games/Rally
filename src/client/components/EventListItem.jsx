@@ -39,8 +39,8 @@ const uploadImage = e => {
                 <div className="navigate-container">
                     <div className="navigate">
                         <button onClick={onSelect}>View</button>
-                        <input type='file' id='single' onChange={uploadImage} /> 
-                        {/* <ImageUpload uploadPhotoHandler={uploadPhotoWithId} title="&#10003;"/> */}
+                        {/* <input type='file' id='single' onChange={uploadImage} />  */}
+                        <ImageUpload uploadPhotoHandler={uploadPhotoWithId} title="&#10003;"/>
                     </div>
                 </div>
             </div>
