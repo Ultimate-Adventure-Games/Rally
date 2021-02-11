@@ -5,7 +5,9 @@ import { AppContext } from './ContextProvider';
 
 const EventListItem = ({ title, description, onSelect, uploadPhotoHandler, id }) => {
     const { user } = useContext(AppContext);
-
+    const uploadPhotoHandlerWithId = file => {
+        uploadPhotoHandler(file, id);
+    }
     return (
         <div className="list-item-container">
             <div className="listItem">
@@ -21,7 +23,7 @@ const EventListItem = ({ title, description, onSelect, uploadPhotoHandler, id })
                     <div className="navigate">
                         <button onClick={onSelect}>View</button>
                         {/* <input type='file' id='single' onChange={uploadImage} />  */}
-                        <ImageUpload uploadPhotoHandler={uploadPhotoHandler} title="&#10003;"/>
+                        <ImageUpload uploadPhotoHandler={uploadPhotoHandlerWithId} title="&#10003;"/>
                     </div>
                 </div>
             </div>
