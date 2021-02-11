@@ -1,9 +1,12 @@
-import React, { useState, Fragment } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, Fragment, useContext } from "react";
+import { Link, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
+import { AppContext } from './ContextProvider';
 import axios from 'axios';
 
-const CreateEvent = () => {
+const CreateEvent = (props) => {
+  const { id }= useParams()
+  const { events, setEvents } = useContext(AppContext)
   const [inputFields, setInputFields] = useState([
     { eventName: "", eventLat: "", eventLon: "", eventRiddle: "" },
   ]);
@@ -31,7 +34,6 @@ const CreateEvent = () => {
     } else {
       values[index].eventRiddle = event.target.value;
     }
-
     setInputFields(values);
   };
 
@@ -39,22 +41,19 @@ const CreateEvent = () => {
     e.preventDefault();
 
     const data = {
-      // const params = [req.body.event_name, req.body.event_index, req.body.event_lat, req.body.event_long, req.body.event_riddle, req.body.hunt_id];
       event_name: inputFields[0]["eventName"],
       event_riddle: inputFields[0]["eventRiddle"],
       event_lat: inputFields[0]["eventLat"],
       event_long: inputFields[0]["eventLon"],
-      hunt_id: 1,
-      event_index: 3
+      hunt_id: id,
+      event_index: events.length
     }
-
-    console.log(data);
 
     axios.post('http://localhost:3000/api/events/createEvent', data)
     .then(res => {
       if (res.status === 200) {
         alert("Event successfully created. Return to Hunts List Page!")
-        props.history.push('/')
+        props.history.push('/hunts/' + id)
       } else {
         alert("Error creating Event");
       }
@@ -64,7 +63,8 @@ const CreateEvent = () => {
   return (
     <>
       <Link to='/hunts'>Back to Hunts</Link>
-      <h1>Create Hunt!</h1>
+      
+      <h1>Add Event!</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           {inputFields.map((inputField, index) => (
@@ -142,7 +142,6 @@ const CreateEvent = () => {
           </button>
         </div>
         <br />
-        {/* <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
       </form>
     </>
   );

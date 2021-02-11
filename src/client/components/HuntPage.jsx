@@ -9,11 +9,11 @@ import PhotoInfoWindow from './PhotoInfoWindow';
 const HuntPage = (props) => {
     const { id } = useParams();
 
-    const {
-        hunts
-    } = useContext(AppContext)
-
-    const [currentHunt, setCurrentHunt] = useState('');
+    const { hunts, events, setEvents } = useContext(AppContext)
+    const [ currentHunt, setCurrentHunt ] = useState('');
+    const [map, setMap] = useState(null);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const location = useLocation(); //to add user location
 
     useEffect(() => {
         for (const hunt of hunts) {
@@ -29,15 +29,8 @@ const HuntPage = (props) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.API_KEY
-
     });
-    const location = useLocation();
-
-    const [map, setMap] = useState(null);
-    const [selectedEvent, setSelectedEvent] = useState(null);
-
-    const [events, setEvents] = useState([]);
-
+    
     useEffect(() => {
         axios(`http://localhost:3000/api/events/getEventsByHunt/${id}`)
             .then(res => {
@@ -130,7 +123,8 @@ const HuntPage = (props) => {
                     events.map(event => <EventListItem key={event.event_id} id={event.event_id} title={event.event_name} uploadPhotoHandler={uploadPhotoHandler} description={event.event_riddle} onSelect={onSelectEventHandler.bind(this, event.event_id)} />)
                 }
             </div>
-            <Link to="/createevent">Create Event</Link>
+            <Link to={"/createevent/" + id}>Create Event</Link>
+           
         </>
     )
 }
