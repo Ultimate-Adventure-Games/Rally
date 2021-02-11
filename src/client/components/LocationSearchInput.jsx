@@ -24,7 +24,6 @@ import { AppContext } from './ContextProvider';
      */
 
      const { userLat, userLng } = useContext(AppContext);
-     console.log(userLat, userLng)
 
      const searchOptions = {
        location: new google.maps.LatLng(userLat, userLng),

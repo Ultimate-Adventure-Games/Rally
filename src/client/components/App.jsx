@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Home from "./Home";
 import HuntPage from "./HuntPage";
 import HuntsListPage from "./HuntsListPage";
@@ -79,19 +79,22 @@ class App extends Component {
     setUserLng: this.setUserLng,
   };
 }
-
+  // FIXME added BrowserRouter wrapper in order to be able to prop drill via Link components
   render() {
     return (
         <div className="app">
         <AppContext.Provider value={this.state}>
-          <Switch>
-            <Route path="/hunts" component={HuntsListPage} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/hunt/:id" component={HuntPage} />
-            <Route path="/createhunt" component={CreateHunt} />
-            <Route path="/createevent" component={CreateEvent} />
-            <Route path="/" component={Login} />
-          </Switch>
+          
+          <BrowserRouter>
+            <Switch>
+              <Route path="/hunts" component={HuntsListPage} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/hunt/:id" component={HuntPage} />
+              <Route path="/createhunt" component={CreateHunt} />
+              <Route path="/createevent" component={CreateEvent} />
+              <Route path="/" component={Login} />
+            </Switch>
+          </BrowserRouter>
         </AppContext.Provider>
       </div>
     )

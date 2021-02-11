@@ -119,10 +119,8 @@ const CreateHunt = () => {
                   onChange={(event) => handleInputChange(index, event)}
                 />
               </div>
-              <label htmlFor="huntDetail" className="newLocationLabel">Hunt Starting Location</label>
-              <LocationSearchInput
-                handleSelect={handleSelect}
-              />
+              <label htmlFor="huntLocation" className="newLocationLabel">Hunt Starting Location</label>
+              <LocationSearchInput handleSelect={handleSelect}/>
               <div className="form-group col-sm-6">
                 <label htmlFor="huntDetail">Hunt Description</label>
                 <input
