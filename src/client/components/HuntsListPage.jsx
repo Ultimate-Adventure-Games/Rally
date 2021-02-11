@@ -127,6 +127,7 @@ const HuntsListPage = props => {
     // loop and push to array a HuntListItem component 
     // TODO switch back to hunts Context array
     huntsTest.forEach(huntObj => {
+      console.log(huntObj);
       huntList.push(
         <HuntListItem
         className=""
@@ -135,7 +136,11 @@ const HuntsListPage = props => {
         huntName={huntObj.hunt_name}
         voteCount={huntObj.hunt_votes}
         pplGoing={huntObj.hunt_pplGoing}
-        pos={huntObj.pos}
+        // pos={huntObj.pos}
+        pos={{
+          lat: huntObj.lat,
+          lng: huntObj.lng
+        }}
         linkTo={'/hunt/' + huntObj.hunt_id}
         huntItemClickHandler={huntItemClickHandler}
         >

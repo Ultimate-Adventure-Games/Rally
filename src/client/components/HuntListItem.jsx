@@ -39,8 +39,7 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
       else if (runningHunts.includes(huntId)) setUserHuntStatus(2)
       else if (potentialHunts.includes(huntId)) setUserHuntStatus(1)
       else setUserHuntStatus(0)
-      setUserHuntStatus(0)
-    }, userHuntStatus)
+    }, [])
       
     const [votes, setVotes] = useState(voteCount)
     
@@ -51,14 +50,14 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
 
     
 
-    useEffect(() => {
-      // if votes or userHuntStatus changes -- submit PUT request to update db entry
-    }, [votes, userHuntStatus])
+    // useEffect(() => {
+    //   // if votes or userHuntStatus changes -- submit PUT request to update db entry
+    // }, [votes, userHuntStatus])
 
     
     const signupHandler = () => {
       // update status state hook in order to conditionally render the appropriate button
-      // setUserHuntStatus(1)
+      setUserHuntStatus(1)
       // update array of potentialHunts (hunts user signed up for) in local state first 
       setPotential([...potential, huntId])
       // replace array in context with the updated array from local state
