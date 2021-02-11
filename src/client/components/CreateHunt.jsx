@@ -2,54 +2,91 @@ import React, { useState, Fragment } from "react";
 import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
 import axios from 'axios';
+import PlacesAutocomplete from "react-places-autocomplete";
+
+import {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete';
+import LocationSearchInput from "./LocationSearchInput";
+
+
+
+
 
 const CreateHunt = () => {
+  /**
+   * object with input field values held in local state
+   */
   const [inputFields, setInputFields] = useState([
     { huntName: "", huntLat: "", huntLon: "", huntDetail: "" },
   ]);
 
+  /**
+   * handler to add an additional set of fields
+   */
   const handleAddFields = () => {
     const values = [...inputFields];
     values.push({ huntName: "", huntLat: "", huntLon: "", huntDetail: "" });
     setInputFields(values);
   };
 
+  /**
+   * handler to remove most recently added fields
+   */
   const handleRemoveFields = (index) => {
     const values = [...inputFields];
     values.splice(index, 1);
     setInputFields(values);
   };
 
+  
+  /**
+   * handler for monitoring input change and updating local state value 
+   * NOTE that location data (lat, lng) is handled at the @LocationSearchInput child component level
+   */
   const handleInputChange = (index, event) => {
     const values = [...inputFields];
-    if (event.target.name === "huntName") {
-      values[index].huntName = event.target.value;
-    } else if (event.target.name === "huntLat") {
-      values[index].huntLat = event.target.value;
-    } else if (event.target.name === "huntLon") {
-      values[index].huntLon = event.target.value;
-    } else {
-      values[index].huntDetail = event.target.value;
-    }
-
+    if (event.target.name === "huntName") values[index].huntName = event.target.value;
+    else values[index].huntDetail = event.target.value;
     setInputFields(values);
   };
 
+  
+  /**
+   * @handleSelect is passed down to @LocationSearchInput via props 
+   * upon selecting an autocomplete option from the location field, 
+   * the @lat / @lng values are deconstructed and stored in local state
+   */
+  const [newLat, setNewLat] = useState('')
+  const [newLng, setNewLng] = useState('')
+
+  /* Upon making a selection, @address is parsed for the @lat / @lng values, which are stored in local state */ 
+  const handleSelect = address => {
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(({lat, lng}) => {
+        setNewLat(lat)
+        setNewLng(lng)
+      })
+      .catch(error => console.error('Error', error));
+  };
+
+  /**
+   * form submit handler creates an object with relevant properties stored in local state
+   * and updates database
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("inputFields", inputFields);
-
     const data = {
-      //const params = [req.body.hunt_name, req.body.hunt_des, req.body.hunt_votes, req.body.hunt_banner, req.body.hunt_lat, req.body.hunt_long, req.body.user_id];
       hunt_name: inputFields[0]["huntName"],
       hunt_des: inputFields[0]["huntDetail"],
-      hunt_lat: inputFields[0]["huntLat"],
-      hunt_long: inputFields[0]["huntLon"],
+      hunt_lat: newLat,
+      hunt_long: newLng,
       hunt_votes: 0,
       user_id: 1
     }
-
-    console.log(data);
 
     axios.post('http://localhost:3000/api/hunts/createHunt', data)
     .then(res => {
@@ -62,12 +99,18 @@ const CreateHunt = () => {
     })
   };
 
+  
+
   return (
     <>
-      <Link to='/hunts'>Back to Hunts</Link>
+      <Link 
+      to='/hunts'
+      className="btn btn-primary mr-2"
+      type="button"
+      >Back to Hunts</Link>
       <h1>Create Hunt!</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-row">
+        <div className="form-col">
           {inputFields.map((inputField, index) => (
             <Fragment key={`${inputField}~${index}`}>
               <div className="form-group col-sm-6">
@@ -81,29 +124,9 @@ const CreateHunt = () => {
                   onChange={(event) => handleInputChange(index, event)}
                 />
               </div>
-              <div className="form-group col-sm-4">
-                <label htmlFor="huntLat">Hunt Latitude</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="huntLat"
-                  name="huntLat"
-                  value={inputField.huntLat}
-                  onChange={(event) => handleInputChange(index, event)}
-                />
-              </div>
-              <div className="form-group col-sm-4">
-                <label htmlFor="huntLon">Hunt Longitude</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="huntLon"
-                  name="huntLon"
-                  value={inputField.huntLon}
-                  onChange={(event) => handleInputChange(index, event)}
-                />
-              </div>
-              <div className="form-group col-sm-4">
+              <label htmlFor="huntLocation" className="newLocationLabel">Hunt Starting Location</label>
+              <LocationSearchInput handleSelect={handleSelect}/>
+              <div className="form-group col-sm-6">
                 <label htmlFor="huntDetail">Hunt Description</label>
                 <input
                   type="text"
