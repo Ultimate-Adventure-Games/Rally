@@ -30,6 +30,12 @@ class App extends Component {
     }))
   }
 
+  this.setEvents = events => {
+    this.setState(state => ({
+      events: events,
+    }))
+  }
+
   this.setPotentialHunts = potentialHunts => {
     this.setState(state => ({
       potentialHuntList: potentialHunts,
@@ -70,6 +76,8 @@ class App extends Component {
     potentialHunts: [],
     runningHunts: [],
     completedHunts: [],
+    events: [],
+    setEvents: this.setEvents,
     setCurrentUser: this.setCurrentUser,
     setHunts: this.setHunts,
     setPotentialHunts: this.setPotentialHunts,

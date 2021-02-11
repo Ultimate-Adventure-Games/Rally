@@ -4,12 +4,15 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 import EventListItem from './EventListItem';
 import axios from 'axios';
 import { AppContext } from './ContextProvider';
+import PhotoInfoWindow from './PhotoInfoWindow';
 
 const HuntPage = (props) => {
     const { id } = useParams();
 
     const {
-      hunts
+      hunts,
+      events,
+      setEvents,
     } = useContext(AppContext)
 
     const [currentHunt, setCurrentHunt] = useState('');
@@ -46,7 +49,6 @@ const HuntPage = (props) => {
     })
     const [zoom, setZoom] = useState(15);
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const [events, setEvents] = useState([]);
     
     /* array of {lat, lng} objects, in event order for purposes of tracing a polyline */
     const [eventPath, setEventPath] = useState([])
@@ -108,19 +110,21 @@ const HuntPage = (props) => {
     }
     
     
+    useEffect(() => {
+      // Fit map bounds to contain all markers
+      console.log('MAPREF', map)
+      if (map && events.length > 0) {
+        fitBounds(map);
+        setZoom((zoom) => Math.max(zoom, 15));
+      }
+    }, [events, map])
+
     
     const onMapLoad = useCallback(map => {
       // Store a reference to the google map instance in state
       setMap(map);
     },[]);
 
-    useEffect(() => {
-      // Fit map bounds to contain all markers
-      if (events.length > 0) {
-        fitBounds(map);
-        setZoom((zoom) => Math.max(zoom, 15));
-      }
-    }, [events])
     
 
 
@@ -136,14 +140,35 @@ const HuntPage = (props) => {
         map.setCenter({ lat, lng })
     };
 
-    const uploadPhotoHandler = (file, id) => {
+    const uploadPhotoHandler = async (file, id) => {
         const { event_pos, event_name, event_riddle } = events.find(event => event.event_id === id);
-        const { lat, lng } = pos;
-        setSelectedEvent(<InfoWindow onCloseClick={() => { setSelectedEvent(null) }} position={{ lat, lng }}><><h3>{event_name}</h3><div>{event_riddle}</div><div><img style={{ width: '50%', height: '50%' }} src={URL.createObjectURL(file)} /></div></></InfoWindow>)
+        const { lat, lng } = event_pos;
+
+        // Placeholder code to simulate upload photo asynchronously
+        await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve()
+            }, 1000)
+        })
+
+        // Request all Photo urls for this event from API
+        const urls = await requestPhotos(id);
+        // TODO Once, the above line actually returns URLs, replace the prop value photoUrls with the urls array...
+        setSelectedEvent(<PhotoInfoWindow onCloseClick={() => { setSelectedEvent(null) }} lat={lat} lng={lng} title={event_name} description={event_riddle} photoUrls={[URL.createObjectURL(file), URL.createObjectURL(file), URL.createObjectURL(file)]}/>)
     }
 
+    const requestPhotos = (eventId) => {
+        // Placeholder code to simulate requesting photos asynchronously
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([ /*STUB HOSTED IMAGE URLS*/]);
+            }, 2000);
+        })
+    }
+//merge conflict head
     /*
-     * Begin Stub Data
+     * Placeholder Center...
+     * TODO Calculate the center of the map dynamically based on all pins...
      */
     
 
@@ -159,10 +184,8 @@ const HuntPage = (props) => {
       editable: false,
       visible: true,
     }
-    
-
+//merge conflict tail
     return (
-        console.log('CURRENT HUNT', currentHunt),
         <>
             <Link to='/hunts'
                   className="btn btn-primary mr-2"

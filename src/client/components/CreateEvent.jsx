@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { Link, useLocation } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
+import { AppContext } from './ContextProvider';
 import axios from 'axios';
 import PlacesAutocomplete from "react-places-autocomplete";
 
@@ -94,7 +95,7 @@ const CreateEvent = (props) => {
       event_lat: newLat,
       event_long: newLng,
       hunt_id: id,
-      event_index: 3
+      event_index: events.length
     }
     console.log(data)
 
