@@ -37,7 +37,6 @@ const CreateEvent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("inputFields", inputFields);
 
     const data = {
       // const params = [req.body.event_name, req.body.event_index, req.body.event_lat, req.body.event_long, req.body.event_riddle, req.body.hunt_id];
@@ -45,6 +44,8 @@ const CreateEvent = () => {
       event_riddle: inputFields[0]["eventRiddle"],
       event_lat: inputFields[0]["eventLat"],
       event_long: inputFields[0]["eventLon"],
+      hunt_id: 1,
+      event_index: 3
     }
 
     console.log(data);
