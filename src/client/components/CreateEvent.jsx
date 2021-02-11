@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useContext } from "react";
 import { Link, useLocation } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
 import { AppContext } from './ContextProvider';
@@ -12,7 +12,7 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 import LocationSearchInput from "./LocationSearchInput";
-
+import { useController } from "react-hook-form";
 
 
 const CreateEvent = (props) => {
@@ -22,7 +22,8 @@ const CreateEvent = (props) => {
   const [inputFields, setInputFields] = useState([
     { eventName: "", eventLat: "", eventLon: "", eventRiddle: "" },
   ]);
-
+  
+  const {events} = useContext(AppContext)
   const location = useLocation();
   const { id } = location.state;
   
