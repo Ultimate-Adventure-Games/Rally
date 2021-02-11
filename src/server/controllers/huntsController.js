@@ -33,7 +33,6 @@ huntsController.getAllHunts = (req, res, next) => {
 
   db.query(queryText)
     .then((result) => {
-      console.log('hit')
       res.locals.hunts = result.rows;
       return next();
     })

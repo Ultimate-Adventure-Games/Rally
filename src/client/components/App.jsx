@@ -3,7 +3,9 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import HuntPage from "./HuntPage";
 import HuntsListPage from "./HuntsListPage";
-import Signup from "./Signup"
+import Signup from "./Signup";
+import CreateHunt from "./CreateHunt";
+import CreateEvent from "./CreateEvent";
 import { AppContext } from './ContextProvider';
 import Login from './Login'
 import '../styles/styles.css'
@@ -24,7 +26,7 @@ class App extends Component {
 
   this.setHunts = hunts => {
     this.setState(state => ({
-      huntList: hunts,
+      hunts: hunts,
     }))
   }
 
@@ -64,10 +66,14 @@ class App extends Component {
     // FIXME hardcoded for now (Alcatraz, SF)
     userLat: 37.8270,
     userLng: -122.4230,
-    hunts: {},
+    hunts: [],
+    potentialHunts: [],
+    runningHunts: [],
     completedHunts: [],
     setCurrentUser: this.setCurrentUser,
     setHunts: this.setHunts,
+    setPotentialHunts: this.setPotentialHunts,
+    setRunningHunts: this.setRunningHunts,
     setCompletedHunts: this.setCompletedHunts,
     setUserLat: this.setUserLat,
     setUserLng: this.setUserLng,
@@ -82,6 +88,8 @@ class App extends Component {
             <Route path="/hunts" component={HuntsListPage} />
             <Route path="/signup" component={Signup} />
             <Route path="/hunt/:id" component={HuntPage} />
+            <Route path="/createhunt" component={CreateHunt} />
+            <Route path="/createevent" component={CreateEvent} />
             <Route path="/" component={Login} />
           </Switch>
         </AppContext.Provider>
