@@ -116,7 +116,13 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, huntItemClickHandler
                 
                 <div className="navigate-container">
                     <div className="navigate">
-                        <Link to={linkTo}>select</Link>
+                        <Link 
+                        to={{
+                        pathname: linkTo,
+                        state: { huntName: huntName }
+                        }}
+                        >
+                        select</Link>
                     </div>
                 </div>
             </div>

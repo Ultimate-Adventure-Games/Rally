@@ -41,10 +41,9 @@ const HuntsListPage = props => {
         .then(res => {
           
           setHunts(res.data.map(hunt => {
-            console.log('API HUNT', hunt);
             return  {
               ...hunt,
-              pos: {
+              hunt_pos: {
                 lat: hunt.hunt_lat,
                 lng: hunt.hunt_long,
               }
@@ -108,7 +107,6 @@ const HuntsListPage = props => {
     const [infoWindow, setInfoWindow] = useState([]);
     
     const huntItemClickHandler = (pos, huntName) => {
-      console.log('position', pos);
       return setInfoWindow(
         // FIXME infoWindow doesn't open back up after being closed
         <InfoWindow position={pos}>
@@ -129,7 +127,6 @@ const HuntsListPage = props => {
     // loop and push to array a HuntListItem component 
     // TODO switch back to hunts Context array
     hunts.forEach(huntObj => {
-      console.log(huntObj);
       huntList.push(
         <HuntListItem
         className=""
@@ -139,7 +136,7 @@ const HuntsListPage = props => {
         voteCount={huntObj.hunt_votes}
         // pplGoing={huntObj.hunt_pplGoing}
         // pos={huntObj.pos}
-        pos={huntObj.pos}
+        pos={huntObj.hunt_pos}
         linkTo={'/hunt/' + huntObj.hunt_id}
         huntItemClickHandler={huntItemClickHandler}
         >
@@ -156,13 +153,9 @@ const HuntsListPage = props => {
                 <GoogleMap zoom={16} mapContainerStyle={{ height: '500px', width: '100%' }} center={center} onLoad={onMapLoad} onUnmount={onMapUnmount}>
                     {/* Load Markers */}
                     {
-                      console.log('ALL HUNTS', hunts),
                         hunts.map(hunt => {
-                          console.log('HUNT RENDER', hunt);
                           return (
-                            <div>
-                          <Marker position={hunt.pos}/>
-                          </div>
+                          <Marker position={hunt.hunt_pos}/>
                           )
                         })
                           
@@ -174,7 +167,6 @@ const HuntsListPage = props => {
           }
         <div className='list-item-section'>{huntList}</div>
         <Link to="/createhunt">Create Hunt</Link>
-        <button onClick={() => console.log('HUNTS', hunts)}>HUNTS</button>
       </div>
     );
 
