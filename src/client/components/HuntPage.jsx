@@ -14,6 +14,7 @@ const HuntPage = (props) => {
     const [map, setMap] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const location = useLocation(); //to add user location
+    const center = { lat: 30.2674331, lng: -97.7419488 } //stub data
 
     useEffect(() => {
         for (const hunt of hunts) {
@@ -25,11 +26,6 @@ const HuntPage = (props) => {
             }
         }
     }, [])
-
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: process.env.API_KEY
-    });
     
     useEffect(() => {
         axios(`http://localhost:3000/api/events/getEventsByHunt/${id}`)
@@ -47,7 +43,12 @@ const HuntPage = (props) => {
             })
             .catch(err => console.log('GET Error retrieving all hunts in the area'))
     }, [])
-
+//merge conflict head
+    const { isLoaded } = useJsApiLoader({
+      id: 'google-map-script',
+      googleMapsApiKey: process.env.API_KEY
+    });
+ //merge conflict tail
     const onMapLoad = useCallback(map => {
         setMap(map);
     }, []);
@@ -89,7 +90,7 @@ const HuntPage = (props) => {
             }, 2000);
         })
     }
-
+//merge conflict head
     /*
      * Placeholder Center...
      * TODO Calculate the center of the map dynamically based on all pins...
@@ -98,12 +99,10 @@ const HuntPage = (props) => {
         lat: 30.2674331,
         lng: -97.7419488
     }
-
+//merge conflict tail
     return (
-        console.log('CURRENT HUNT', currentHunt),
         <>
             <Link to='/hunts'>back to Hunts</Link>
-            {/* <h1>{location.state.huntName}</h1> */}
             <h1>{currentHunt}</h1>
             {
                 isLoaded ?
