@@ -1,14 +1,15 @@
 import React, { useState, Fragment } from "react";
+import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.css";
 
 const CreateHunt = () => {
   const [inputFields, setInputFields] = useState([
-    { eventName: "", eventLocation: "" },
+    { eventName: "", eventLat: "", eventLon: "", eventDetail: "" },
   ]);
 
   const handleAddFields = () => {
     const values = [...inputFields];
-    values.push({ eventName: "", eventLocation: "" });
+    values.push({ eventName: "", eventLat: "", eventLon: "", eventDetail: "" });
     setInputFields(values);
   };
 
@@ -22,8 +23,12 @@ const CreateHunt = () => {
     const values = [...inputFields];
     if (event.target.name === "eventName") {
       values[index].eventName = event.target.value;
+    } else if (event.target.name === "eventLat") {
+      values[index].eventLat = event.target.value;
+    } else if (event.target.name === "eventLon") {
+      values[index].eventLon = event.target.value;
     } else {
-      values[index].eventLocation = event.target.value;
+      values[index].eventDetail = event.target.value;
     }
 
     setInputFields(values);
@@ -36,6 +41,7 @@ const CreateHunt = () => {
 
   return (
     <>
+      <Link to='/hunts'>Back to Hunts</Link>
       <h1>Create Hunt!</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
@@ -53,13 +59,35 @@ const CreateHunt = () => {
                 />
               </div>
               <div className="form-group col-sm-4">
-                <label htmlFor="eventLocation">Event Location</label>
+                <label htmlFor="eventLat">Event Latitude</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="eventLocation"
-                  name="eventLocation"
-                  value={inputField.eventLocation}
+                  id="eventLat"
+                  name="eventLat"
+                  value={inputField.eventLat}
+                  onChange={(event) => handleInputChange(index, event)}
+                />
+              </div>
+              <div className="form-group col-sm-4">
+                <label htmlFor="eventLon">Event Longitude</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="eventLon"
+                  name="eventLon"
+                  value={inputField.eventLon}
+                  onChange={(event) => handleInputChange(index, event)}
+                />
+              </div>
+              <div className="form-group col-sm-4">
+                <label htmlFor="eventDetail">Event Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="eventDetail"
+                  name="eventDetail"
+                  value={inputField.eventDetail}
                   onChange={(event) => handleInputChange(index, event)}
                 />
               </div>
@@ -92,7 +120,7 @@ const CreateHunt = () => {
           </button>
         </div>
         <br />
-        <pre>{JSON.stringify(inputFields, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
       </form>
     </>
   );
