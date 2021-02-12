@@ -172,12 +172,9 @@ const HuntPage = (props) => {
       visible: true,
     }
     return (
-        <>
-            <Link to='/hunts'
-                  className="btn btn-primary mr-2"
-                  type="button"
-            >Back to Hunts</Link>
-            <h1>{window.localStorage.currentHunt}</h1>
+        <div className="hunt-page">
+            
+            {/* <h1>{window.localStorage.currentHunt}</h1> */}
             {
               isLoaded ?
                 <GoogleMap 
@@ -201,6 +198,10 @@ const HuntPage = (props) => {
                     events.map(event => <EventListItem key={event.event_id} id={event.event_id} title={event.event_name} uploadPhotoHandler={uploadPhotoHandler} description={event.event_riddle} onSelect={onSelectEventHandler.bind(this, event.event_id)} />)
                 }
             </div>
+            <Link to='/hunts'
+                  className="btn btn-secondary mr-2"
+                  type="button"
+            >Back to Hunts</Link>
             <Link to={{
                   pathname: '/createevent',
                   state: { id }
@@ -210,7 +211,7 @@ const HuntPage = (props) => {
                 >
             Create Event</Link>
             
-        </>
+            </div>
     )
 }
 
