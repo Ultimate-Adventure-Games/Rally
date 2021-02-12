@@ -89,8 +89,8 @@ body {
 
 .photo-container {
   display: flex;
-  flex-direction: row;
-  max-width: 100px;
+  flex-direction: column;
+  width: 250px;
 }
 
 .login-container {
