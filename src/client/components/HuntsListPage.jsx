@@ -129,8 +129,10 @@ const HuntsListPage = (props) => {
   });
 
   return (
-    <div className="huntListContainer">
+    // <div className="huntListContainer">
+    <div className=" m-0 p-0 w-screen">
       {/* <h1>Scavenger Hunts in Your Area!</h1> */}
+      <div className="box shadow-md">
       {isLoaded ? (
         <GoogleMap
           zoom={16}
@@ -179,12 +181,14 @@ const HuntsListPage = (props) => {
       ) : (
         <p>loading map...</p>
       )}
-      <div className="list-item-section">{huntList}</div>
+      {/* <div className="list-item-section">{huntList}</div> */}
+      </div>
+      <div className="container w-screen p-0 m-0 shadow-md overscroll-auto ">{huntList}</div>
       <Link
         to={{
           pathname: "/createhunt",
         }}
-        className="btn btn-primary mr-2"
+        className="btn btn-primary mr-2 w-100"
         type="button"
       >
         Create Hunt

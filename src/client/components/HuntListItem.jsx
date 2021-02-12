@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from './ContextProvider';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 
@@ -130,11 +132,11 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, handleHuntItemClick,
       const signupButton = () => {
         if (!userHuntStatus) return <button 
         onClick={signupHandler}
-        className="btn btn-primary mr-3"
+        className="btn btn-outline-primary btn-sm mr-3"
         type="button"
         >Sign Up!</button>;
         if (userHuntStatus === 1) return <button
-        className="btn btn-success mr-3"
+        className="btn btn-success btn-sm mr-3"
         type="button"
         >See You There!</button>;
         if (userHuntStatus === 2) return <button>In Progress!</button>;
@@ -144,14 +146,16 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, handleHuntItemClick,
     // TODO include number of people signed up for hunt ?
     return (
         <>
-          <div onClick={(e) => handleHuntItemClick(pos, huntName)} className="list-item-container">
+          <div onClick={(e) => handleHuntItemClick(pos, huntName)} className="list-item-container shadow-md background-green overflow-auto">
             <div className="listItem">
-                <div className="text-container">
-                    <div className="title">
+                <div className="text-container ">
+                    <div className="text-base font-bold">
                         {huntName}
                     </div>
                     <div className="voting-buttons-container">
                       <button className="upvote-button" onClick={handleUpvote}>&#8593;</button>
+                      {/* <i className="fas fa-thumbs-up">thumbs up</i> */}
+                      {/* <i className="bi bi-hand-thumbs-up"></i> */}
                       <div className={votes > 0 ? "voteCountGreen" : "voteCountRed"}>{votes}</div>
                       <button className="downvote-button" onClick={handleDownvote}>&#8595;</button>
                     </div>
@@ -170,7 +174,7 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, handleHuntItemClick,
                         pathname: linkTo,
                         state: { huntName: huntName }
                         }}
-                        className="btn btn-info mr-3"
+                        className="btn btn-outline-info btn-sm mr-3"
                         type="button"
                         >
                         select</Link>
