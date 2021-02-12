@@ -104,11 +104,7 @@ const CreateHunt = () => {
 
   return (
     <>
-      <Link 
-      to='/hunts'
-      className="btn btn-primary mr-2"
-      type="button"
-      >Back to Hunts</Link>
+      
       <h1>Create Hunt!</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-col">
@@ -158,8 +154,13 @@ const CreateHunt = () => {
           ))}
         </div>
         <div className="submit-button">
-          <button
-            className="btn btn-primary mr-2"
+          <Link 
+      to='/hunts'
+      className="btn btn-outline-secondary mr-2 w-50"
+      type="button"
+      >Back to Hunts</Link>
+      <button
+            className="btn btn-primary mr-2 w-50"
             type="submit"
             onSubmit={handleSubmit}
           >

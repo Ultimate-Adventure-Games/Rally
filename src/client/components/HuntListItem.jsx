@@ -174,10 +174,10 @@ const HuntListItem = ({huntId, huntName, voteCount, linkTo, handleHuntItemClick,
                         pathname: linkTo,
                         state: { huntName: huntName }
                         }}
-                        className="btn btn-outline-info btn-sm mr-3"
+                        className="btn btn-outline-info btn-sm mr-3 h-25"
                         type="button"
                         >
-                        select</Link>
+                        Select</Link>
                     </div>
                 </div>
             </div>

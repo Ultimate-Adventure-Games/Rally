@@ -12,6 +12,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { AppContext } from "./ContextProvider";
 import HuntListItem from "./HuntListItem";
 
+
 const HuntsListPage = (props) => {
   // deconstruct huntList and setHuntList from context
   const { hunts, setHunts } = useContext(AppContext);
@@ -129,10 +130,9 @@ const HuntsListPage = (props) => {
   });
 
   return (
-    // <div className="huntListContainer">
-    <div className=" m-0 p-0 w-screen">
+    <div className="huntListContainer">
       {/* <h1>Scavenger Hunts in Your Area!</h1> */}
-      <div className="box shadow-md">
+      <div className="map-container">
       {isLoaded ? (
         <GoogleMap
           zoom={16}

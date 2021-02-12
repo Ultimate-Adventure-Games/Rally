@@ -25,7 +25,7 @@ const EventListItem = ({
         <div className="navigate-container">
           <div className="navigate">
             <button onClick={onSelect}
-            className="btn btn-info mr-2"
+            className="btn btn-outline-info btn-sm mr-3"
             >View</button>
 
             {/* <input type='file' id='single' onChange={uploadImage} />  */}

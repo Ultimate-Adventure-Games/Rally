@@ -11,7 +11,7 @@ import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Login from './Login'
 import '../styles/styles.css'
-import '../styles/tailwind.css'
+
 import "bootstrap/dist/css/bootstrap.css";
 import 'font-awesome/css/font-awesome.min.css';
 import 'normalize.css';
