@@ -1,29 +1,18 @@
-# scavenge-hunt
+## Rally
 
-USERS
-createUser(username, password)
-authUser(username, password)
+Rally is a social media platform to create and share barcrawls. 
 
-USER/HUNT JOIN TABLE
-getAllUsersSignedUpForHunt(hunt_id)
-getAllUsersDoingHunt(hunt_id)
-getAllUsersCompletedHunt(hunt_id)
+## Sample User Flow 
+<h4>Sign In Page</h4>
+- Users initially sign in (or create an account) to access a secure dashboard.
 
-signUpForHunt(user_id, hunt_id)
+<h4>Browse local barcrawls</h4>
+- Once logged in, local barcrawls will be displayed for users to browse.
 
-startHunt(user_id, hunt_id)
-completeHunt(user_id, hunt_id)
 
-HUNTS
-getHunt(hunt_id)
-getAllHunts()
+<h4>Attend a barcrawl</h4>
+- Sign up for and attent a local barcrawl
+- Post pictures of yourself at each location to the leaderboard
 
-EVENTS
-getEvent(event_id)
-createEvent(user_id, hunt_id)
-getEvents(hunt_id)
-
-PHOTOS
-createPhoto(user_id, event_id)
-getPhotosByEvent(event_id)
-getPhotoByUserAndEvent(event_id, user_id) (verify if you completed event or not)
+<h4>Create your own barcrawl</h4>
+- Construct your own barcrawl for other users to embark on!
