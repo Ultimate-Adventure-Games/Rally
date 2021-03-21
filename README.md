@@ -2,7 +2,7 @@
 
 Rally is a social media platform to create and share barcrawls. 
 
-## Sample User Flow 
+## User Experience
 <h4>Sign In Page</h4>
 - Users initially sign in (or create an account) to access a secure dashboard.
 
